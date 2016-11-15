@@ -1,0 +1,8 @@
+.child-b{
+    width:200px;
+    height:200px;
+    border:1px solid red;
+    vertical-align: middle;
+    display: inline-block;
+    margin:20px;
+}

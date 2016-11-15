@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script src="underscore.js"></script>
+<script src="backbone.js"></script>
+<script>
+    var m = Backbone.Model({aaa: 111, bbb: 222, ccc: 333})
+    m.on("change", function (obj) {
+        console.log("m changed", m.toJSON())
+    })
+</script>
+</html>

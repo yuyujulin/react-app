@@ -1,0 +1,8 @@
+.form-item p:first-child label{
+    display: inline-block;
+    width:50px;
+}
+.form-item p:last-child{
+    text-indent: 50px;
+    color: orange;
+}
