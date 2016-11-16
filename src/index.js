@@ -21,13 +21,13 @@ var React = require('react'),
 
 // import RouteStudy2 from './route-study2'
 
-import R from './pjl-cloud'
+// import R from './pjl-cloud'
 
 import BackboneStudy from './backbone-study'
 
 require('./index.css')
 
 ReactDOM.render(
-    <R />,
+    <BackboneStudy />,
     document.getElementById('root')
 );

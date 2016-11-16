@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script src="bone.js"></script>
+<script>
+
+    //    var e = new Event()
+    //    e.on('hello', function () {
+    //        console.log('world')
+    //    })
+    //
+    //    e.trigger('hello')
+    //
+    //    e.off('hello')
+    //
+    //    e.trigger('hello')
+    //
+    //    console.log('----------------')
+    //
+    //    var m = new Model({aaa: 111})
+    //    console.log(m)
+    //
+    //    m.on('change', function (key, oldValue, newValue) {
+    //        console.log('key', key, 'changed from ', oldValue, " to ", newValue)
+    //    })
+    //    m.set('aaa', 222, 333, 444)
+    //
+    //
+    //    var c = new Collection([{aaa: 111, id: 1},
+    //        {aaa: 222, id: 2},
+    //        {aaa: 222, id: 3}])
+    //
+    //    c.on('add', function (obj) {
+    //        console.log('c add', obj)
+    //    })
+    //
+    //    c.on('remove', function (obj) {
+    //        console.log('c remove', obj)
+    //    })
+    //
+    //    c.add({aaa:444, id:4})
+    //
+    //    c.remove(4)
+
+    //    var myModel = Model.extends({
+    //        aaa:function(){
+    //            console.log("hello aaa")
+    //        },
+    //        bbb:function(){
+    //            console.log("hello bbb")
+    //        },
+    //    })
+    //
+    //    var m = new myModel({a:1, b:2})
+    //    m.on('change', function(){
+    //        console.log(this.aaa)
+    //        this.aaa()
+    //    })
+    //
+    //    m.set('a', 3)
+
+
+    var c = new Collection([{aaa: 111, id: 1},
+        {aaa: 222, id: 2},
+        {aaa: 222, id: 3}])
+
+    c.on('change', function () {
+        console.log('model change')
+    })
+
+    var item = c.get(3)
+
+    console.log(item)
+
+//    item.set('aaa', 3333)
+
+
+</script>
+</html>
