@@ -51,7 +51,7 @@ var Cloud = React.createClass({
 
         return (
             <div className="app"
-                 onContextMenu={(e)=>e.preventDefault()}
+                 onContextMenu={this.handleContextMenu}
                  onMouseDown={this.mouseDown}
             >
                 <h1 className="app-title">PJL 云盘</h1>
@@ -73,6 +73,11 @@ var Cloud = React.createClass({
                 />
             </div>
         )
+    },
+    handleContextMenu(e){
+        console.log('handleContextMenu')
+        e.preventDefault()
+        e.stopPropagation()
     },
     rename(path, newName){
         rename({path: path, name: newName}, function () {
