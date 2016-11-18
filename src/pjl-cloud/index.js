@@ -123,7 +123,7 @@ var Cloud = React.createClass({
                 }
             })
         } else {
-            console.log("桌面点击")
+            console.log("桌面点击...")
             this.setState({
                 contextMenuProps: {
                     display: false,
