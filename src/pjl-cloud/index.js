@@ -15,7 +15,7 @@ import 'antd/dist/antd.css'
 import './index.css'
 
 import FileList from './file-list'
-import {getFileList, rename, newFolder} from  './api'
+import {getFileList, rename, newFolder, remove} from  './api'
 import Nav from './nav'
 import ContextMenu from './context-menu'
 import Action from './action'
@@ -88,8 +88,6 @@ var Cloud = React.createClass({
 
                         onNewFolder={this.handleNewFolder}
                         onRename={this.handelRename}
-                        onDelete={this.handleDelete}
-
                 />
             </div>
         )
@@ -131,15 +129,15 @@ var Cloud = React.createClass({
 
             var _this = this
             var path = this.state.path.join('/') + '/' + this.state.selectedItem
-            rename(
-                {
-                    path: path,
-                    name: this.state.newValue
-                },
+            var query = {
+                path: path,
+                name: this.state.newValue
+            }
+            rename(query,
                 function (res) {
-                    var files =  []
-                    _this.state.file.map(function(file){
-                        if(file.name == _this.state.selectedItem){
+                    var files = []
+                    _this.state.file.map(function (file) {
+                        if (file.name == _this.state.selectedItem) {
                             files.push(res) //
                         } else {
                             files.push(file)
@@ -157,9 +155,63 @@ var Cloud = React.createClass({
             )
         }
     },
+    handleDelete(){
+        const {path, selectedItem, file} = this.state;
+        if (_.isEmpty(selectedItem)) {
+            return message.error('请先选择要删除的文件')
+        } else {
+            var _this = this
+            Modal.confirm({
+                title: '删除文件确认',
+                content: '是否确认删除文件' + selectedItem,
+                onOk: function () {
+                    var pathToDelete = path.join('/') + '/' + selectedItem
+                    var query = {
+                        path: pathToDelete,
+                    }
+                    remove(query, function (res) {
+                        message.info('删除文件' + selectedItem + '成功')
+
+                        //更新当前文件列表
+                        var newFiles = []
+                        _.each(file, function (file) {
+                            if (file.name != selectedItem) {
+                                newFiles.push(file)
+                            }
+                        })
+                        _this.setState({
+                            file: newFiles
+                        })
+
+                    }, function (err) {
+
+                    })
+                },
+                onCancel: function () {
+
+                }
+            })
+
+        }
+    },
     handleAction(type){
 
         this.hideContextMenu()
+
+        if ((type == 'rename' || type == 'delete') && !this.state.selectedItem) {
+            Modal.error({
+                title: '操作错误',
+                content: '请先选中某个文件'
+            })
+            return
+        }
+        this.setState({
+            actionType: type,
+        })
+
+        if (type == 'newFolder' || type == 'rename') {
+            this.showAction()
+        }
 
         if (type == 'newFolder') {
             var commonName = '新建文件夹'
@@ -191,22 +243,8 @@ var Cloud = React.createClass({
             this.setState({
                 newValue: this.state.selectedItem
             })
-        }
-
-        if (type == 'rename' && !this.state.selectedItem) {
-            Modal.error({
-                title: '操作错误',
-                content: '重命名时请选中某个文件'
-            })
-            return
-        }
-
-        this.setState({
-            actionType: type,
-        })
-
-        if (type == 'newFolder' || type == 'rename') {
-            this.showAction()
+        } else if (type == 'delete') {
+            this.handleDelete()
         }
     },
     showAction(){

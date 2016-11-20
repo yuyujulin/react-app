@@ -3,29 +3,41 @@ import {Modal, Input} from 'antd'
 
 var Action = React.createClass({
     render(){
-        const {visible, actionType, newValue, onChange, onCancel} = this.props
+        const {visible, newValue, onChange, onCancel} = this.props
 
-        var onOk = this.getOk()
+        var actionProps = this.getActionProps()
         return (
             <div>
                 <Modal
-                    title={actionType == 'newfolder' ? '新建文件夹' : '重命名'}
+                    title={actionProps.title}
                     visible={visible}
                     onCancel={onCancel}
-                    onOk={onOk}
+                    onOk={actionProps.okOperation}
                 >
                     <Input value={newValue} onChange={(e) => onChange(e.target.value)}/>
                 </Modal>
             </div>
         )
     },
-    getOk(){
-        const {visible, actionType, newValue, onChange, onCancel, onNewFolder, onRename} = this.props
+    getActionProps(){
+        const {actionType, onNewFolder, onRename, onDelete} = this.props
         if (actionType == 'newFolder') {
-            return onNewFolder
+            return {
+                title: '新建文件夹',
+                okOperation: onNewFolder
+            }
         }
+
         if (actionType == 'rename') {
-            return onRename
+            return {
+                title: '重命名',
+                okOperation: onRename
+            }
+        }
+
+        return {
+            title: '未知操作',
+            okOperation: function(){console.log('未知操作确认')}
         }
     }
 })

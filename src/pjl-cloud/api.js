@@ -6,8 +6,9 @@ import request from 'superagent'
 
 const host = 'http://101.200.129.112:9527/'
 const GET_FILE = host + 'file/get/'
-const RENAME_FILE = host + 'file/rename/'
 const NEW_FOLDER = host + 'file/mkdir'
+const RENAME_FILE = host + 'file/rename/'
+const REMOVE = host + 'file/remove/'
 
 export function getFileList(path, succCb, errorCb) {
     request.get(GET_FILE).query({
@@ -44,6 +45,21 @@ export function newFolder(query, succCb, errorCb) {
  */
 export function rename(query, succCb, errorCb) {
     request.get(RENAME_FILE).query(query).end(function (err, res) {
+        if (err) {
+            return errorCb(err)
+        }
+        succCb(res.body)
+    })
+}
+
+/**
+ *
+ * @param query {path:xxx}
+ * @param succCb
+ * @param errorCb
+ */
+export function remove(query, succCb, errorCb) {
+    request.get(REMOVE).query(query).end(function (err, res) {
         if (err) {
             return errorCb(err)
         }
