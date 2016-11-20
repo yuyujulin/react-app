@@ -92,19 +92,34 @@ var Cloud = React.createClass({
             </div>
         )
     },
+    checkFileExists(fileName){
+        var nameAlreadyExist = false;
+        const files = this.state.file
+        _.find(files, function (file, i) {
+            return nameAlreadyExist = file.name == fileName
+        })
+        return nameAlreadyExist
+    },
     handleNewFolder(){
+        const {path, file, newValue} = this.state
+
         var _this = this
-        var path = this.state.path.join('/')
+        var fullPath = path.join('/')
+        if (this.checkFileExists(newValue)) {
+            return message.error('文件' + newValue + '已经存在了，请重新命名')
+        }
         newFolder(
             {
-                path: path,
-                name: this.state.newValue
+                path: fullPath,
+                name: newValue
             },
             function (res) {
-                var file = _this.state.file
-                file.push(res)
+
+                var newFiles = Object.assign([], file)
+                newFiles.push(res)
+
                 _this.setState({
-                    file: file
+                    file: newFiles
                 })
                 _this.hideAction()
                 message.success('成功新建文件夹' + res.name)
@@ -114,15 +129,10 @@ var Cloud = React.createClass({
         )
     },
     handelRename(){
-        const files = this.state.file
         const newName = this.state.newValue
 
-        var nameAlreadyExist = false;
-        _.find(files, function (file, i) {
-            return nameAlreadyExist = file.name == newName
-        })
 
-        if (nameAlreadyExist) {
+        if (this.checkFileExists(newName)) {
             message.error(newName + " 已经存在了，请使用另外的文件名")
             return;
         } else {
@@ -144,10 +154,10 @@ var Cloud = React.createClass({
                         }
                     })
                     _this.setState({
-                        file: files
+                        file: files,
+                        selectedItem: res.name
                     })
                     _this.hideAction()
-                    _this.pickItem(res.name)
                     message.success('成功重命名文件' + _this.state.selectedItem)
                 }, function (res) {
                     console.log(res)
@@ -155,7 +165,7 @@ var Cloud = React.createClass({
             )
         }
     },
-    handleDelete(){
+    deleteFile(){
         const {path, selectedItem, file} = this.state;
         if (_.isEmpty(selectedItem)) {
             return message.error('请先选择要删除的文件')
@@ -175,12 +185,13 @@ var Cloud = React.createClass({
                         //更新当前文件列表
                         var newFiles = []
                         _.each(file, function (file) {
-                            if (file.name != selectedItem) {
+                            if (file.name != selectedItem) { //如果不是被删除的那一项就显示
                                 newFiles.push(file)
                             }
                         })
                         _this.setState({
-                            file: newFiles
+                            file: newFiles,
+                            selectedItem: ''
                         })
 
                     }, function (err) {
@@ -244,7 +255,7 @@ var Cloud = React.createClass({
                 newValue: this.state.selectedItem
             })
         } else if (type == 'delete') {
-            this.handleDelete()
+            this.deleteFile()
         }
     },
     showAction(){
@@ -308,7 +319,7 @@ var Cloud = React.createClass({
         })
     },
     pickItem(itemName){
-        console.log("pick Item...")
+        console.log("pick Item..." + itemName)
         this.setState({
             selectedItem: itemName,
             newValue: itemName

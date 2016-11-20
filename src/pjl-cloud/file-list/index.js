@@ -46,7 +46,7 @@ var FileItem = React.createClass({
 
         return (
             <li className={active ? "file-item active" : "file-item"}
-                onMouseDown={(e) => onPick(item.name)}
+                onMouseDown={(e) => this.handleMouseDown(e)}
                 onDoubleClick={this.handleDoubleClick}
             >
                 <span className="file-item-icon">
@@ -64,6 +64,15 @@ var FileItem = React.createClass({
             hashHistory.push(item.path)
         } else {
             window.open(host + item.path)
+        }
+    },
+    handleMouseDown(e){
+        console.log("文件项点击")
+        const {onPick, item} = this.props
+        onPick(item.name)
+        if(e.button == 0){ //左键点击, 则需要阻止桌面的点击，来放置解除选择
+            e.preventDefault()
+            e.stopPropagation()
         }
     }
 })
