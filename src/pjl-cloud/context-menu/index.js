@@ -13,23 +13,21 @@ var ContextMenu = React.createClass({
                 style={{
                     display: this.props.display ? 'block' : 'none',
                     left: this.props.pos.x + 'px', top: this.props.pos.y + 'px'
-                }}
-                onClick={this.handleClick}>
-                <li className="allow">新建文件夹</li>
-                <li className="allow" onClick={this.rename}>重命名</li>
-                <li className="allow">删除</li>
-                <li className="allow">剪切</li>
-                <li className="allow">复制</li>
-                <li className="allow">粘贴</li>
+                }}>
+                <li className="allow" onMouseDown={(e) => this.mouseDown(e, 'newFolder')}>新建文件夹</li>
+                <li className="allow" onMouseDown={(e) => this.mouseDown(e, 'rename')}>重命名</li>
+                <li className="allow" onMouseDown={(e) => this.mouseDown(e, 'delete')}>删除</li>
+                <li className="allow" onMouseDown={(e) => this.mouseDown(e, 'cut')}>剪切</li>
+                <li className="allow" onMouseDown={(e) => this.mouseDown(e, 'copy')}>复制</li>
+                <li className="allow" onMouseDown={(e) => this.mouseDown(e, 'paste')}>粘贴</li>
             </ul>
         )
     },
-    rename(e){
-        console.log("重命名clicked")
-        const {onClickRename}= this.props
+    mouseDown(e, type){
+        const {onAction}= this.props
         e.preventDefault()
         e.stopPropagation()
-        onClickRename()
+        onAction(type)
     }
 })
 

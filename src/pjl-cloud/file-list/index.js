@@ -40,30 +40,20 @@ var FileItem = React.createClass({
         return {}
     },
     render(){
-        const {item, action, onRename, onPick, selectedItem} = this.props
+        const {item, onPick} = this.props
         const type = getIcon(item.ext, item.isFolder)
-
-        const editStatus = item.name === action.name
         const active = item.name === this.props.selectedItem
 
         return (
-            <li className={active ? "file-item active" : "file-item"}>
-                <span className="file-item-icon"
-                      onClick={(e)=>onPick(item.name)}
-                      onMouseDown={(e)=>onPick(item.name)}
-                      onDoubleClick={this.handleDoubleClick}>
+            <li className={active ? "file-item active" : "file-item"}
+                onMouseDown={(e) => onPick(item.name)}
+                onDoubleClick={this.handleDoubleClick}
+            >
+                <span className="file-item-icon">
                     <Icon type={type}/>
                 </span>
                 <p>
-                    <span style={{display: editStatus ? 'none' : 'block'}} className="file-item-name">{item.name}</span>
-                    <span style={{display: editStatus ? 'block' : 'none'}}>
-                        <Input value={this.state.name}
-                               onPressEnter={(e) =>onRename(item.path, e.target.value)}
-                               onChange={(e)=>this.setState({
-                                   name: e.target.value
-                               })}
-                        />
-                    </span>
+                    <span className="file-item-name">{item.name}</span>
                 </p>
             </li>
         )
@@ -80,16 +70,14 @@ var FileItem = React.createClass({
 
 var FileList = React.createClass({
     render(){
-        const {onChange, loading, action, onRename, selectedItem, onPick} = this.props
+        const {onChange, loading, selectedItem, onPick} = this.props
         var nodes = this.props.file.map(function (obj) {
             return (
                 <FileItem
-                    key={obj.path}
+                    key={obj.path + "-" + obj.name}
                     item={obj}
                     onChange={onChange}
-                    action={action}
                     selectedItem={selectedItem}
-                    onRename={onRename}
                     onPick={onPick}
                 />
             )
