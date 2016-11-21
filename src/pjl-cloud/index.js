@@ -15,7 +15,7 @@ import 'antd/dist/antd.css'
 import './index.css'
 
 import FileList from './file-list'
-import {getFileList, rename, newFolder, remove} from  './api'
+import {getFileList, rename, newFolder, remove, copy, move} from  './api'
 import Nav from './nav'
 import ContextMenu from './context-menu'
 import Action from './action'
@@ -48,12 +48,15 @@ var Cloud = React.createClass({
             },
             action: '',
             selectedItem: '',
+            pasteSourceAction: '', //cut, copy
+            pastSourcePath: '', //
             showAction: false,
             newValue: '',
             actionType: null
         }
     },
     render(){
+        const {selectedItem, path, file, loading, newValue, showAction, actionType, contextMenuProps, pastSourcePath} = this.state
 
         return (
             <div className="app"
@@ -61,36 +64,43 @@ var Cloud = React.createClass({
                  onMouseDown={this.mouseDown}
             >
                 <h1 className="app-title">PJL 云盘</h1>
-                <Nav value={this.state.path} onChange={(path) => hashHistory.push(path)}/>
+                <Nav value={path} onChange={(path) => hashHistory.push(path)}/>
                 <FileList
-                    file={this.state.file}
-                    path={this.state.path}
-                    loading={this.state.loading}
-                    selectedItem={this.state.selectedItem}
+                    file={file}
+                    path={path}
+                    loading={loading}
+                    selectedItem={selectedItem}
+                    pastSourcePath={pastSourcePath}
                     onPick={(itemName) => this.pickItem(itemName)}
+                    clearSelectedItem={this.clearSelectedItem}
                 />
                 <ContextMenu
-                    display={this.state.contextMenuProps.display}
-                    pos={{x: this.state.contextMenuProps.x, y: this.state.contextMenuProps.y}}
-
+                    display={contextMenuProps.display}
+                    pos={{x: contextMenuProps.x, y: contextMenuProps.y}}
+                    selectedItem={selectedItem}
+                    pastSourcePath={pastSourcePath}
                     onAction={(type) => this.handleAction(type)}
                 />
 
-                <Action visible={this.state.showAction}
-                        actionType={this.state.actionType}
-                        newValue={this.state.newValue}
+                <Action visible={showAction}
+                        actionType={actionType}
+                        newValue={newValue}
                         onChange={(value) =>
                             this.setState({
                                 newValue: value
                             })
                         }
                         onCancel={this.hideAction}
-
                         onNewFolder={this.handleNewFolder}
                         onRename={this.handelRename}
                 />
             </div>
         )
+    },
+    clearSelectedItem(){
+        this.setState({
+            selectedItem: ''
+        })
     },
     checkFileExists(fileName){
         var nameAlreadyExist = false;
@@ -172,8 +182,8 @@ var Cloud = React.createClass({
         } else {
             var _this = this
             Modal.confirm({
-                title: '删除文件确认',
-                content: '是否确认删除文件' + selectedItem,
+                title: '删除确认',
+                content: '是否确认删除文件"' + selectedItem + '"',
                 onOk: function () {
                     var pathToDelete = path.join('/') + '/' + selectedItem
                     var query = {
@@ -207,9 +217,11 @@ var Cloud = React.createClass({
     },
     handleAction(type){
 
+        const {selectedItem} = this.state
+
         this.hideContextMenu()
 
-        if ((type == 'rename' || type == 'delete') && !this.state.selectedItem) {
+        if ((type == 'rename' || type == 'delete' || type == 'cut' || type == 'copy') && !selectedItem) {
             Modal.error({
                 title: '操作错误',
                 content: '请先选中某个文件'
@@ -225,38 +237,103 @@ var Cloud = React.createClass({
         }
 
         if (type == 'newFolder') {
-            var commonName = '新建文件夹'
-            var name = ''
-            var count = 0
-            const files = this.state.file;
-            _.each(files, function (file) {
-                if (/^新建文件夹/.test(file.name)) {
-                    count++
-                }
-            })
-            var nameAlreadyExist = true
-            name = !count ? commonName : commonName + count
-            while (nameAlreadyExist) {
-                _.find(files, function (file) {
-                    nameAlreadyExist = file.name === name
-                    return nameAlreadyExist;
-                })
-                if (nameAlreadyExist) {
-                    name = commonName + (++count)
-                }
-            }
+            var newFolderName = this.getNewFolderName()
 
             this.setState({
-                newValue: name
+                newValue: newFolderName
             })
 
         } else if (type == 'rename') {
             this.setState({
-                newValue: this.state.selectedItem
+                newValue: selectedItem
             })
         } else if (type == 'delete') {
             this.deleteFile()
+        } else if (type == 'cut') {
+            this.prePasteFile(type)
+        } else if (type == 'copy') {
+            this.prePasteFile(type)
+        } else if (type == 'paste') {
+            this.doPaste()
         }
+    },
+    prePasteFile(type){
+        const {selectedItem, path} = this.state
+        var pastSourcePath = path.join('/') + '/' + selectedItem
+        console.log("pastSourcePath", pastSourcePath)
+        this.setState({
+            pasteSourceAction: type,
+            pastSourcePath: pastSourcePath
+        })
+        message.info((type == 'cut' ? '已剪切' : '已复制') + '"' + selectedItem + '"')
+    },
+    doPaste(){
+        const {pasteSourceAction, pastSourcePath, path, file} = this.state
+        var _this = this
+        if (_.isEmpty(pasteSourceAction) || _.isEmpty(pastSourcePath)) {
+            return message.error('请先剪切或复制某个文件')
+        } else {
+            var fileName = _.last(pastSourcePath.split('/'))
+            const newPath = path.join('/') + '/' + fileName
+            var overwrite = false
+            if (this.checkFileExists(fileName)) {
+                Modal.confirm({
+                    title: '覆盖确认',
+                    content: '已存在同名文件"' + fileName + '", 是否要覆盖?',
+                    onOk: function () {
+                        overwrite = true
+                    }
+                })
+            } else {
+                overwrite = true
+            }
+            if (!overwrite) { // 不覆盖则什么也不做
+                return
+            }
+
+            if (pasteSourceAction == 'cut') { //剪切-粘贴
+                move({
+                    old_path: pastSourcePath,
+                    new_path: newPath
+                }, function (res) {
+                    file.push(res)
+                    _this.setState({
+                        file: file,
+                        pastSourcePath: '' //如果是剪切则需要重置粘贴源路径，因为源路径已经不存在了
+                    })
+                }, function (res) {
+                    message.error("粘贴失败：" + res)
+                })
+            } else { //复制-粘贴
+                copy({
+                    old_path: pastSourcePath,
+                    new_path: newPath
+                }, function (res) {
+                    file.push(res)
+                    _this.setState({
+                        file: file
+                    })
+                }, function (res) {
+                    message.error("粘贴失败：" + res)
+                })
+            }
+        }
+    },
+    getNewFolderName(){
+        const {file} = this.state
+        var commonName = '新建文件夹'
+        var name = ''
+        var count = 0
+        _.each(file, function (fileItem) {
+            if (/^新建文件夹/.test(fileItem.name)) {
+                count++
+            }
+        })
+        name = !count ? commonName : commonName + count
+        while (this.checkFileExists(name)) {
+            name = commonName + (++count)
+        }
+        return name;
     },
     showAction(){
         this.setState({
