@@ -1,6 +1,14 @@
+
+.icon-nav{
+    font-size:20px;
+}
+
 .nav {
     margin-bottom: 20px;
-    font-size: 20px;
     padding-top: 5px;
     padding-bottom: 5px;
+}
+
+.ant-breadcrumb {
+    font-size: 16px;
 }

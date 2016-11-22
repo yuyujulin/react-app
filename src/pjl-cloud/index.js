@@ -25,7 +25,7 @@ const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const RadioButton = Radio.Button
 
-var R = React.createClass({
+var CloudRouter = React.createClass({
     render(){
         return (
             <Router history={hashHistory}>
@@ -64,7 +64,7 @@ var Cloud = React.createClass({
                  onMouseDown={this.mouseDown}
             >
                 <h1 className="app-title">PJL 云盘</h1>
-                <Nav value={path} onChange={(path) => hashHistory.push(path)}/>
+                <Nav path={path} onChange={(path) => hashHistory.push(path)}/>
                 <FileList
                     file={file}
                     path={path}
@@ -419,6 +419,6 @@ var Cloud = React.createClass({
     }
 })
 
-export default R
+export default CloudRouter
 
 

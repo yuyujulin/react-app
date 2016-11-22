@@ -1,3 +1,48 @@
+
+.icon-fs{
+    font-size:50px;
+}
+
+.icon-fs-folder {
+    color: #FFD659;
+}
+
+.icon-fs-picture {
+    color: #FF7743;
+}
+
+.icon-fs-text {
+    color: #4D97FF;
+}
+
+.icon-fs-code {
+    color: #47CCAB;
+}
+
+.icon-fs-word{
+    color: #4D97FF;
+}
+
+.icon-fs-excel{
+    color: #63C422;
+}
+
+.icon-fs-ppt{
+    color: #FF9743;
+}
+
+.icon-fs-pdf{
+    color: #FF5A5A;
+}
+
+.icon-fs-av{
+    color: #8183F1;
+}
+
+.icon-fs-zip{
+    color: #D4B68B;
+}
+
 .file-content {
     position: absolute;
     left: 0;
@@ -21,7 +66,7 @@
 }
 
 .file-item {
-    width: 150px;
+    width: 100px;
     height: 100px;
     font-size: 20px;
     transition: 0.3s;
@@ -40,12 +85,10 @@
 
 .file-item span {
     display: block;
-    color: #000000;
     text-align: center;
 }
 
 .file-item-icon {
-    color: #787878;
     line-height: 70px;
     font-size: 50px;
 }
@@ -56,6 +99,4 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    width: 150px;
-    padding: 0 10px;
 }

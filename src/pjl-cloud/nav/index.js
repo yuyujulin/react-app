@@ -3,17 +3,22 @@
  */
 import React from 'react'
 import {Breadcrumb, Icon} from 'antd'
-
-import {Link} from 'react-router'
+import _ from 'underscore'
 
 import './index.css'
 
 var NavItem = React.createClass({
     render(){
+        const {title} = this.props
+        var icon = (<i className='iconfont icon-nav'>&#xe60d;</i>)
+        if (title === 'Home') {
+            icon = (<i className='iconfont icon-nav'>&#xe6a7;</i>)
+        }
+
         return (
             <Breadcrumb.Item>
                 <a onClick={this.handleClick}>
-                    {this.props.title}
+                    {icon}{this.props.title}
                 </a>
             </Breadcrumb.Item>
         )
@@ -28,16 +33,19 @@ var NavItem = React.createClass({
 var Nav = React.createClass({
     render(){
         var that = this
-        const {value, onChange} = this.props
+        const {path, onChange} = this.props
 
         var to = ''
-        const nodes = value.map(function (o, i) {
-            to = to + "/" + o
-            console.log("to  ", to)
-            return (
-                <NavItem key={i} title={o} to={to} onClick={onChange}/>
-            )
+        var nodes = []
+
+        _.each(path, function (o, i) {
+            if (o !== '') {
+                to = to + "/" + o
+                console.log("to  ", to)
+                nodes.push(<NavItem key={i} title={o} to={to} onClick={onChange}/>)
+            }
         })
+
         return (
             <div className="nav">
                 <Breadcrumb>

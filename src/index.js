@@ -21,7 +21,7 @@ var React = require('react'),
 
 // import RouteStudy2 from './route-study2'
 
-import R from './pjl-cloud'
+import CloudRouter from './pjl-cloud'
 
 // import BackboneStudy from './backbone-study'
 
@@ -30,6 +30,6 @@ import R from './pjl-cloud'
 require('./index.css')
 
 ReactDOM.render(
-    <R />,
+    <CloudRouter />,
     document.getElementById('root')
 );
