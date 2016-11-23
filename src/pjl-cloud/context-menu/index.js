@@ -26,11 +26,7 @@ var ContextMenu = React.createClass({
         if (!_.isEmpty(pastSourcePath)) {
             nodes.push(<li key="paste" className="allow" onMouseDown={(e) => this.mouseDown(e, 'paste')}>粘贴</li>)
         }
-        nodes.push(
-            <li key="upload" className="allow">
-                <input type="file" id="myfile" value="" name="myfile" multiple="multiple"/>
-                {/*<button id="uploader">Upload</button>*/}
-            </li>)
+        nodes.push(<li key="upload" className="allow" onMouseDown={(e) => this.mouseDown(e, 'upload')}>上传</li>)
 
         return (
             <ul className="context-menu"

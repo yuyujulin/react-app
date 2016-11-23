@@ -4,18 +4,19 @@
 import React from 'react'
 import { Modal, message} from  'antd'
 import {Router, Route, hashHistory} from 'react-router';
-
 import _ from 'underscore'
 
-import 'antd/dist/antd.css'
+import FileUploader from './file-uploader'
 
+import 'antd/dist/antd.css'
 import './index.css'
 
 import FileList from './file-list'
-import {getFileList, rename, newFolder, remove, copy, move} from  './api'
 import Nav from './nav'
 import ContextMenu from './context-menu'
 import Action from './action'
+
+import {getFileList, rename, newFolder, remove, copy, move} from  './api'
 
 var Cloud = React.createClass({
     getInitialState: function () {
@@ -33,12 +34,14 @@ var Cloud = React.createClass({
             pasteSourceAction: '', //cut, copy
             pastSourcePath: '', //
             showAction: false,
+            showUploader: false,
             newValue: '',
             actionType: null
         }
     },
     render(){
-        const {selectedItem, path, file, loading, newValue, showAction, actionType, contextMenuProps, pastSourcePath} = this.state
+        const {selectedItem, path, file, loading, newValue, showAction, actionType,
+            contextMenuProps, pastSourcePath, showUploader} = this.state
 
         return (
             <div className="app"
@@ -75,6 +78,10 @@ var Cloud = React.createClass({
                         onCancel={this.hideAction}
                         onNewFolder={this.handleNewFolder}
                         onRename={this.handelRename}
+                />
+                <FileUploader
+                    visible={showUploader}
+                    onCancel={this.hideUploader}
                 />
             </div>
         )
@@ -234,7 +241,19 @@ var Cloud = React.createClass({
             this.prePasteFile(type)
         } else if (type === 'paste') {
             this.doPaste()
+        } else if (type === 'upload'){
+            this.showUploader()
         }
+    },
+    showUploader(){
+        this.setState({
+            showUploader:true
+        })
+    },
+    hideUploader(){
+        this.setState({
+            showUploader:false
+        })
     },
     prePasteFile(type){
         const {selectedItem, path} = this.state
