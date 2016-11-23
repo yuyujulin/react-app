@@ -2,13 +2,10 @@
  * Created by Administrator on 2016/11/12 0012.
  */
 import React from 'react'
-import ReactDOM from 'react-dom'
-import {Button, Col, Row, Table, Rate, Modal, Form, Input, Radio, Alert, message} from  'antd'
-import {Router, Route, IndexRoute, Link, hashHistory, browserHistory} from 'react-router';
+import { Modal, message} from  'antd'
+import {Router, Route, hashHistory} from 'react-router';
 
 import _ from 'underscore'
-
-import request from 'superagent'
 
 import 'antd/dist/antd.css'
 
@@ -19,21 +16,6 @@ import {getFileList, rename, newFolder, remove, copy, move} from  './api'
 import Nav from './nav'
 import ContextMenu from './context-menu'
 import Action from './action'
-
-
-const FormItem = Form.Item
-const RadioGroup = Radio.Group
-const RadioButton = Radio.Button
-
-var CloudRouter = React.createClass({
-    render(){
-        return (
-            <Router history={hashHistory}>
-                <Route path="*" component={Cloud}/>
-            </Router>
-        )
-    }
-})
 
 var Cloud = React.createClass({
     getInitialState: function () {
@@ -106,7 +88,7 @@ var Cloud = React.createClass({
         var nameAlreadyExist = false;
         const files = this.state.file
         _.find(files, function (file, i) {
-            return nameAlreadyExist = file.name == fileName
+            return nameAlreadyExist = file.name === fileName
         })
         return nameAlreadyExist
     },
@@ -156,8 +138,8 @@ var Cloud = React.createClass({
             rename(query,
                 function (res) {
                     var files = []
-                    _this.state.file.map(function (file) {
-                        if (file.name == _this.state.selectedItem) {
+                    _.each(_this.state.file,function (file) {
+                        if (file.name === _this.state.selectedItem) {
                             files.push(res) //
                         } else {
                             files.push(file)
@@ -195,7 +177,7 @@ var Cloud = React.createClass({
                         //更新当前文件列表
                         var newFiles = []
                         _.each(file, function (file) {
-                            if (file.name != selectedItem) { //如果不是被删除的那一项就显示
+                            if (file.name !== selectedItem) { //如果不是被删除的那一项就显示
                                 newFiles.push(file)
                             }
                         })
@@ -207,9 +189,6 @@ var Cloud = React.createClass({
                     }, function (err) {
 
                     })
-                },
-                onCancel: function () {
-
                 }
             })
 
@@ -221,7 +200,7 @@ var Cloud = React.createClass({
 
         this.hideContextMenu()
 
-        if ((type == 'rename' || type == 'delete' || type == 'cut' || type == 'copy') && !selectedItem) {
+        if ((type === 'rename' || type === 'delete' || type === 'cut' || type === 'copy') && !selectedItem) {
             Modal.error({
                 title: '操作错误',
                 content: '请先选中某个文件'
@@ -232,28 +211,28 @@ var Cloud = React.createClass({
             actionType: type,
         })
 
-        if (type == 'newFolder' || type == 'rename') {
+        if (type === 'newFolder' || type === 'rename') {
             this.showAction()
         }
 
-        if (type == 'newFolder') {
+        if (type === 'newFolder') {
             var newFolderName = this.getNewFolderName()
 
             this.setState({
                 newValue: newFolderName
             })
 
-        } else if (type == 'rename') {
+        } else if (type === 'rename') {
             this.setState({
                 newValue: selectedItem
             })
-        } else if (type == 'delete') {
+        } else if (type === 'delete') {
             this.deleteFile()
-        } else if (type == 'cut') {
+        } else if (type === 'cut') {
             this.prePasteFile(type)
-        } else if (type == 'copy') {
+        } else if (type === 'copy') {
             this.prePasteFile(type)
-        } else if (type == 'paste') {
+        } else if (type === 'paste') {
             this.doPaste()
         }
     },
@@ -265,7 +244,7 @@ var Cloud = React.createClass({
             pasteSourceAction: type,
             pastSourcePath: pastSourcePath
         })
-        message.info((type == 'cut' ? '已剪切' : '已复制') + '"' + selectedItem + '"')
+        message.info((type === 'cut' ? '已剪切' : '已复制') + '"' + selectedItem + '"')
     },
     doPaste(){
         const {pasteSourceAction, pastSourcePath, path, file} = this.state
@@ -291,7 +270,7 @@ var Cloud = React.createClass({
                 return
             }
 
-            if (pasteSourceAction == 'cut') { //剪切-粘贴
+            if (pasteSourceAction === 'cut') { //剪切-粘贴
                 move({
                     old_path: pastSourcePath,
                     new_path: newPath
@@ -409,13 +388,23 @@ var Cloud = React.createClass({
         })
     },
     mouseDown(e){
-        if (e.button == 2) {
+        if (e.button === 2) {
             this.showContextMenu(e)
         } else {
             console.log('桌面点击')
             this.hideContextMenu()
             this.unPickItem()
         }
+    }
+})
+
+var CloudRouter = React.createClass({
+    render(){
+        return (
+            <Router history={hashHistory}>
+                <Route path="*" component={Cloud}/>
+            </Router>
+        )
     }
 })
 

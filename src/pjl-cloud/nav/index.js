@@ -2,7 +2,7 @@
  * Created by Administrator on 2016/11/5 0005.
  */
 import React from 'react'
-import {Breadcrumb, Icon} from 'antd'
+import {Breadcrumb} from 'antd'
 import _ from 'underscore'
 
 import './index.css'
@@ -32,7 +32,6 @@ var NavItem = React.createClass({
 
 var Nav = React.createClass({
     render(){
-        var that = this
         const {path, onChange} = this.props
 
         var to = ''

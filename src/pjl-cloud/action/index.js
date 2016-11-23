@@ -20,15 +20,15 @@ var Action = React.createClass({
         )
     },
     getActionProps(){
-        const {actionType, onNewFolder, onRename, onDelete} = this.props
-        if (actionType == 'newFolder') {
+        const {actionType, onNewFolder, onRename} = this.props
+        if (actionType === 'newFolder') {
             return {
                 title: '新建文件夹',
                 okOperation: onNewFolder
             }
         }
 
-        if (actionType == 'rename') {
+        if (actionType === 'rename') {
             return {
                 title: '重命名',
                 okOperation: onRename

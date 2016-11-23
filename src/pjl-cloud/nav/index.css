@@ -4,9 +4,9 @@
 }
 
 .nav {
-    margin-bottom: 20px;
     padding-top: 5px;
     padding-bottom: 5px;
+    /*border: solid green 1px;*/
 }
 
 .ant-breadcrumb {

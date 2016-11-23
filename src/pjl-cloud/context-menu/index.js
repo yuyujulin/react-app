@@ -14,7 +14,8 @@ var ContextMenu = React.createClass({
 
         var nodes = []
 
-        nodes.push(<li key="newFolder" className="allow new-folder" onMouseDown={(e) => this.mouseDown(e, 'newFolder')}>新建文件夹</li>)
+        nodes.push(<li key="newFolder" className="allow new-folder" onMouseDown={(e) => this.mouseDown(e, 'newFolder')}>
+            新建文件夹</li>)
         if (!_.isEmpty(selectedItem)) {
             nodes.push(<li key="rename" className="allow" onMouseDown={(e) => this.mouseDown(e, 'rename')}>重命名</li>)
             nodes.push(<li key="delete" className="allow" onMouseDown={(e) => this.mouseDown(e, 'delete')}>删除</li>)
@@ -23,8 +24,13 @@ var ContextMenu = React.createClass({
         }
 
         if (!_.isEmpty(pastSourcePath)) {
-            nodes.push(<li key="paste"  className="allow" onMouseDown={(e) => this.mouseDown(e, 'paste')}>粘贴</li>)
+            nodes.push(<li key="paste" className="allow" onMouseDown={(e) => this.mouseDown(e, 'paste')}>粘贴</li>)
         }
+        nodes.push(
+            <li key="upload" className="allow">
+                <input type="file" id="myfile" value="" name="myfile" multiple="multiple"/>
+                {/*<button id="uploader">Upload</button>*/}
+            </li>)
 
         return (
             <ul className="context-menu"

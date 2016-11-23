@@ -2,9 +2,6 @@
  * Created by Administrator on 2016/11/12 0012.
  */
 import React from 'react'
-import ReactDOM from 'react-dom'
-
-import {Icon, Input} from 'antd'
 import Loading from '../loading'
 import {hashHistory} from 'react-router'
 
@@ -22,7 +19,7 @@ function getIcon(ext, isFolder) {
         case '.css':
             return (<i className='iconfont icon-fs icon-fs-code'>&#xe618;</i>)
         case '.js':
-            return (<i className='iconfont icon-fs icon-fs-code'>&#xe605;</i>)
+            return (<i className='iconfont icon-fs icon-fs-code'>&#xe79a;</i>)
         case '.json':
             return (<i className='iconfont icon-fs icon-fs-code'>&#xe61a;</i>)
 
@@ -80,9 +77,9 @@ function getIcon(ext, isFolder) {
         case '.txt':
         case '.text':
             return (<i className='iconfont icon-fs icon-fs-text'>&#xe616;</i>)
+        default:
+            return (<i className='iconfont icon-fs'>&#xe601;</i>) //其他文件
     }
-
-    return (<i className='iconfont icon-fs'>&#xe601;</i>) //其他文件
 }
 
 var FileItem = React.createClass({
@@ -90,7 +87,7 @@ var FileItem = React.createClass({
         return {}
     },
     render(){
-        const {item, onPick} = this.props
+        const {item} = this.props
         const icon = getIcon(item.ext, item.isFolder)
         const active = item.name === this.props.selectedItem
 
@@ -121,7 +118,7 @@ var FileItem = React.createClass({
         console.log("文件项点击")
         const {onPick, item} = this.props
         onPick(item.name)
-        if (e.button == 0) { //左键点击, 则需要阻止桌面的点击，来放置解除选择
+        if (e.button === 0) { //鼠标左键点击, 则需要阻止桌面的点击，来放置解除选择
             e.preventDefault()
             e.stopPropagation()
         }
