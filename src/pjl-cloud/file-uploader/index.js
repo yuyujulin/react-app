@@ -9,7 +9,7 @@ import _ from 'underscore'
 var FileUploader = React.createClass({
     getInitialState(){
         return {
-            chosenFiles: null
+            chosenFiles: []
         }
     },
     render(){
@@ -23,9 +23,12 @@ var FileUploader = React.createClass({
             baseUrl: 'http://101.200.129.112:9527/file/upload/',
             multiple: true,
             chooseFile(files){
-                console.log('files', files)
+                var filesToUpload = []
+                _.each(files, function (file) {
+                    filesToUpload.push(file.name)
+                })
                 _this.setState({
-                    chosenFiles: files
+                    chosenFiles: filesToUpload
                 })
             },
             fileFieldName: 'cloud',
@@ -34,13 +37,11 @@ var FileUploader = React.createClass({
 
         console.log(this.state.chosenFiles)
 
-        var nodes = []
-
-        // var nodes = this.state.chosenFiles.map(function (chosenFile, i) {
-        //     return (
-        //         <li key={i}>{chosenFile.name}</li>
-        //     )
-        // })
+        var nodes = this.state.chosenFiles.map(function (chosenFile, i) {
+            return (
+                <li key={i}>{chosenFile}</li>
+            )
+        })
 
         return (
             <div>
@@ -48,29 +49,20 @@ var FileUploader = React.createClass({
                        visible={visible}
                        onCancel={onCancel}
                        onOk={onOk}
-                       footer={[
-                           <Button key="choose" type="ghost" size="large" onClick={this.handleChoose}>请选择</Button>,
-                           <Button key="upload" type="primary" size="large" onClick={this.handleUpload}>
-                               上传
-                           </Button>,
-                       ]}
+                       footer={[]}
                 >
                     <h2>要上传的文件</h2>
                     <ul>
                         {nodes}
                     </ul>
-                    <FileUpload ref="File-Upload" options={options}/>
+                    <FileUpload style={{float: 'right'}} ref="File-Upload" options={options}>
+                        <Button ref="chooseBtn" type="primary" size="large">choose</Button>
+                        <Button ref="uploadBtn" type="ghost" size="large">upload</Button>
+                    </FileUpload>
                 </Modal>
             </div>
         )
-    },
-    handleChoose(){
-        this.refs['File-Upload'].forwardChoose();
-    },
-    handleUpload(){
-        this.refs['File-Upload'].filesToUpload([this.state.chosenFiles]);
     }
-
 })
 
 export default FileUploader
