@@ -1,6 +1,8 @@
 # 忽略node_modules 目录
 node_modules
 
+.idea
+
 # 以'#'开始的行，被视为注释.
 # 忽略掉所有文件名是 foo.txt的文件.
 # foo.txt
