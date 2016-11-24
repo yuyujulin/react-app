@@ -1,0 +1,111 @@
+.#{$clsPrefix}card-box {
+    position: relative;
+    z-index: 0;
+
+    box-sizing: border-box;
+    float: left;
+    padding: $gap * 2;
+
+    background-color: $cardBgC;
+    border-radius: $r + 1;
+    overflow: hidden;
+    transition: box-shadow 1s;
+
+    &:hover {
+        transition: box-shadow 1s;
+    }
+}
+
+.#{$clsPrefix}card-box {
+    &:hover {
+        box-shadow: $shadow-default;
+    }
+    path {
+        stroke: #dfdfdf;
+        stroke-linecap: round;
+    }
+    @each $status, $shadowType, $type in ('progress', $shadow-primary, $primary),
+                                         ('complete' , $shadow-success, $success),
+                                         ('error'   , $shadow-danger , $danger )
+    {
+        &.#{$clsPrefix}upload-#{$status} {
+            &:hover {
+                box-shadow: #{$shadowType};
+            }
+            .#{$clsPrefix}card-border {
+                stroke: #{$type};
+            }
+        }
+    }
+
+    &.#{$clsPrefix}upload-complete {
+        animation-duration: 1s;
+        animation-name: showSuccess;
+
+        .#{$clsPrefix}card-border {
+            stroke-dasharray: 0!important;
+            stroke-dashoffset: 0!important;
+        }
+    }
+
+    &.#{$clsPrefix}upload-error {
+        animation-duration: 1s;
+        animation-name: showError;
+
+        .#{$clsPrefix}card-border {
+            stroke-dasharray: 0!important;
+            stroke-dashoffset: 0!important;
+
+            transition: unset;
+        }
+    }
+}
+
+.#{$clsPrefix}card-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+
+    & > path {
+        fill: transparent;
+        stroke-dasharray: 0;
+        stroke-width: 2;
+
+        transition: stroke-dashoffset 1s;
+    }
+
+}
+
+.#{$clsPrefix}card-header {
+    height: 48px;
+    line-height: 48px;
+    border-bottom: 1px solid #e9e9e9;
+    padding: 0 24px;
+}
+
+.#{$clsPrefix}card-content {
+    border-radius: 2px;
+    line-height: 1.2;
+    overflow: hidden;
+}
+
+.#{$clsPrefix}card-preview {
+    width: 100%;
+}
+
+@keyframes showError {
+    from {box-shadow: $shadow-danger;}
+    20%  {box-shadow: none;}
+    40%  {box-shadow: $shadow-danger;}
+    60%  {box-shadow: none;}
+    80%  {box-shadow: $shadow-danger;}
+    to   {box-shadow: none;}
+}
+
+@keyframes showSuccess {
+    from {box-shadow: $shadow-success;}
+    to {box-shadow: none;}
+}

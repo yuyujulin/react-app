@@ -80,6 +80,7 @@ var Cloud = React.createClass({
                         onRename={this.handelRename}
                 />
                 <FileUploader
+                    path={path}
                     visible={showUploader}
                     onCancel={this.hideUploader}
                 />
