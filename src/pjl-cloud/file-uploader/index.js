@@ -6,6 +6,8 @@ import {Modal, Button} from 'antd'
 import FileUpload from 'react-fileupload'
 import _ from 'underscore'
 
+import './index.css'
+
 var FileUploader = React.createClass({
     getInitialState(){
         return {
@@ -45,19 +47,19 @@ var FileUploader = React.createClass({
 
         return (
             <div>
-                <Modal title='上传文件'
+                <Modal className='file-uploader'
+                       title='要上传的文件'
                        visible={visible}
                        onCancel={onCancel}
                        onOk={onOk}
                        footer={[]}
                 >
-                    <h2>要上传的文件</h2>
                     <ul>
                         {nodes}
                     </ul>
                     <FileUpload style={{float: 'right'}} ref="File-Upload" options={options}>
-                        <Button ref="chooseBtn" type="primary" size="large">choose</Button>
-                        <Button ref="uploadBtn" type="ghost" size="large">upload</Button>
+                        <Button style={{marginRight: '20px'}} ref="chooseBtn" type="primary" size="large">请选择</Button>
+                        <Button ref="uploadBtn" type="ghost" size="large">上传</Button>
                     </FileUpload>
                 </Modal>
             </div>
