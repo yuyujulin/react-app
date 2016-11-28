@@ -65,7 +65,6 @@ function getIcon(ext, isFolder) {
         case '.rmvb':
         case '.rm':
         case '.flv':
-        case '.3gp':
         case '.vob':
             return (<i className='iconfont icon-fs icon-fs-ppt'>&#xe61e;</i>)
 
