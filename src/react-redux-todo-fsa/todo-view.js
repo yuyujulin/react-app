@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import ReactDOM from 'react-dom'
+import {addItem, removeItem, toggleStatus, changeStatusToShow} from './action'
 
 //因为只有render方法，没有处理数据的逻辑了，现在我们把他叫
 //展示性组件
@@ -12,10 +13,10 @@ var Todo = React.createClass({
         const {items, dispatch, statusToShow} =  this.props
         var nodes = items.map(function (item, index) {
             var node = null;
-            if (statusToShow == 'all' || (statusToShow == 'active' && item.active) || (statusToShow == 'completed' && !item.active)) {
+            if (statusToShow === 'all' || (statusToShow === 'active' && item.active) || (statusToShow === 'completed' && !item.active)) {
                 node = (
                     <p key={index}>
-                        <span onClick={(e) => dispatch({type: 'toggleItemStatus', itemName: item.name})}
+                        <span onClick={(e) => dispatch(toggleStatus(item.name))}
                               style={{textDecoration: item.active ? '' : 'line-through'}}>
                             {item.name}
                         </span>
@@ -37,12 +38,12 @@ var Todo = React.createClass({
                     {nodes}
                 </div>
                 <div>
-                    <button onClick={(e) => dispatch({type: 'changeStatusToShow', statusToShow: 'all'})}>all</button>
+                    <button onClick={(e) => dispatch(changeStatusToShow('all'))}>all</button>
                     --
-                    <button onClick={(e) => dispatch({type: 'changeStatusToShow', statusToShow: 'active'})}>active
+                    <button onClick={(e) => dispatch(changeStatusToShow('active'))}>active
                     </button>
                     --
-                    <button onClick={(e) => dispatch({type: 'changeStatusToShow', statusToShow: 'completed'})}>completed
+                    <button onClick={(e) => dispatch(changeStatusToShow('completed'))}>completed
                     </button>
                 </div>
             </div>
@@ -51,18 +52,11 @@ var Todo = React.createClass({
     handleAdd(){
         const {dispatch} = this.props
         var value = ReactDOM.findDOMNode(this.refs.input).value
-        dispatch({
-            type: 'add',
-            itemName: value
-        })
+        dispatch(addItem(value))
     },
     handleRemove(name){
         const {dispatch} = this.props
-        console.log('removing ' + name)
-        dispatch({
-            type: 'remove',
-            itemName: name
-        })
+        dispatch(removeItem(name))
     }
 })
 

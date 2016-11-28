@@ -3,49 +3,52 @@
  */
 import {combineReducers} from 'redux'
 
+const defaultState = {
+    name: 'todo-mvc',
+    statusToShow: 'all',
+    items: [{name: 'aaa', active: false}, {name: 'bbb', active: true},]
+}
+
 //单一的reducer，等待传入的action来处理数据
+const todo = (state = defaultState, action = {}) => {
+    const {items} = state
+    const {type, payload} = action
 
-var todo = function (state, action) {
 
-    switch (action.type) {
-        case 'add':
-            var items = state.items
-            items.push({name: action.itemName, active: true})
+    switch (type) {
+        case 'ADD_ITEM':
+            items.push({name: payload.itemName, active: true})
             // return Object.assign({}, state, {items: items})  //这个语句不行，因为items的地址与原state的地址没发生变化
             // 返回对象里面的属性必须与原state的属性的地址都必须不一样，因此这里用[...items] 新生成一个数组
             return Object.assign({}, state, {items: [...items]})
-        case 'remove':
-            var items = state.items,
-                json = []
+
+        case 'REMOVE_ITEM':
+            var json = []
 
             for (var i = 0; i < items.length; i++) {
-                if (items[i].name != action.itemName) {
+                if (items[i].name !== payload.itemName) {
                     json.push(items[i])
                 }
             }
             return Object.assign({}, state, {items: json})
-        case 'changeStatusToShow':
-            return Object.assign({}, state, {statusToShow: action.statusToShow})
-        case 'toggleItemStatus':
-            var items = state.items
 
+        case 'CHANGE_STATUS_TO_SHOW':
+            return Object.assign({}, state, {statusToShow: payload.status})
+
+        case 'TOGGLE_STATUS':
             for (var i = 0; i < items.length; i++) {
-                if (items[i].name == action.itemName) {
+                if (items[i].name === payload.itemName) {
                     items[i].active = !items[i].active
                 }
             }
             return Object.assign({}, state, {items: [...items]})
-    }
 
-
-    return {
-        name: 'todo-mvc',
-        statusToShow: 'all',
-        items: [{name: 'aaa', active: false}, {name: 'bbb', active: true},]
+        default:
+            return state
     }
 }
 
-var fs = function (state, action) {
+const fs = (state, action) => {
     switch (action.type) {
 
     }

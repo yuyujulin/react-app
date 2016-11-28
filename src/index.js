@@ -21,15 +21,17 @@ var React = require('react'),
 
 // import RouteStudy2 from './route-study2'
 
-import CloudRouter from './pjl-cloud'
+// import CloudRouter from './pjl-cloud'
 
 // import BackboneStudy from './backbone-study'
 
-// import ReduxStudy from './redux-study'
+// import ReactReduxTodo from './react-redux-todo'
+
+import ReactReduxTodo from './react-redux-todo-fsa' // flux standard action
 
 require('./index.css')
 
 ReactDOM.render(
-    <CloudRouter />,
+    <ReactReduxTodo />,
     document.getElementById('root')
 );

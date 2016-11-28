@@ -8,21 +8,22 @@ import {createStore, compose} from 'redux'
 
 import reducer from './reducer'
 
-import Container from './todo-container'
+import TodoContainer from './todo-container'
 
-var store = createStore(reducer, compose(
-    window.devToolsExtension() //让Chrome的Redux Devtools显示数据
-))
+var store = createStore(reducer,
+    //让Chrome的Redux Devtools显示数据, 需要在Chrome上先安装Redux Devtools
+    compose(window.devToolsExtension())
+)
 
-var ReduxStudy = React.createClass({
+var ReactReduxTodo = React.createClass({
         render(){
             return (
                 <Provider store={store}>
-                    <Container/>
+                    <TodoContainer/>
                 </Provider>
             )
         }
     }
 )
 
-export default  ReduxStudy
+export default  ReactReduxTodo
