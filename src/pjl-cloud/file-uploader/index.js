@@ -2,7 +2,7 @@
  * Created by pjl on 2016/11/23/0023.
  */
 import React from 'react'
-import {Modal, Button} from 'antd'
+import {Modal, Button, message} from 'antd'
 import FileUpload from 'react-fileupload'
 import _ from 'underscore'
 
@@ -15,7 +15,8 @@ var FileUploader = React.createClass({
         }
     },
     render(){
-        const {visible, onCancel, onOk, path} = this.props
+        const {visible, onCancel, onOk, path, updateFiles} = this.props
+        const {chosenFiles} = this.state
         const _this = this
 
         var uploadPath = "/" + path.join('/')
@@ -24,6 +25,7 @@ var FileUploader = React.createClass({
         const options = {
             baseUrl: 'http://101.200.129.112:9527/file/upload/',
             multiple: true,
+            dataType: 'text',
             chooseFile(files){
                 var filesToUpload = []
                 _.each(files, function (file) {
@@ -33,13 +35,27 @@ var FileUploader = React.createClass({
                     chosenFiles: filesToUpload
                 })
             },
+            uploadSuccess(resp){
+                console.log('upload success..!')
+                console.log(resp)
+                const {chosenFiles} = _this.state
+
+                updateFiles(chosenFiles)
+                _this.setState({
+                    chosenFiles: []
+                })
+            },
+            uploadError: function (err) {
+                message.error('文件上传出错' + err)
+            },
+            uploadFail: function (resp) {
+                message.error('文件上传失败' + resp)
+            },
             fileFieldName: 'cloud',
             paramAddToField: {path: uploadPath}
         }
 
-        console.log(this.state.chosenFiles)
-
-        var nodes = this.state.chosenFiles.map(function (chosenFile, i) {
+        var nodes = chosenFiles.map(function (chosenFile, i) {
             return (
                 <li key={i}>{chosenFile}</li>
             )

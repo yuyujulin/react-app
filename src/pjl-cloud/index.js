@@ -2,7 +2,7 @@
  * Created by Administrator on 2016/11/12 0012.
  */
 import React from 'react'
-import { Modal, message} from  'antd'
+import {Modal, message} from  'antd'
 import {Router, Route, hashHistory} from 'react-router';
 import _ from 'underscore'
 
@@ -40,8 +40,10 @@ var Cloud = React.createClass({
         }
     },
     render(){
-        const {selectedItem, path, file, loading, newValue, showAction, actionType,
-            contextMenuProps, pastSourcePath, showUploader} = this.state
+        const {
+            selectedItem, path, file, loading, newValue, showAction, actionType,
+            contextMenuProps, pastSourcePath, showUploader
+        } = this.state
 
         return (
             <div className="app"
@@ -49,7 +51,7 @@ var Cloud = React.createClass({
                  onMouseDown={this.mouseDown}
             >
                 <h1 className="app-title">PJL 云盘</h1>
-                <Nav path={path} onChange={(path) => hashHistory.push(path)}/>
+                <Nav path={path} onChange={(path) => this.handleNavItemClick(path)}/>
                 <FileList
                     file={file}
                     path={path}
@@ -83,9 +85,42 @@ var Cloud = React.createClass({
                     path={path}
                     visible={showUploader}
                     onCancel={this.hideUploader}
+                    updateFiles={(uploadedFiles) => this.updateFiles(uploadedFiles)}
                 />
             </div>
         )
+    },
+    handleNavItemClick(path){
+        hashHistory.push(path)
+    },
+    updateFiles(uploadedFiles){
+        console.log('updating files....')
+        const _this = this
+        var currentPath = this.state.path.join('/') + '/'
+        var files = []
+        _.each(uploadedFiles, function (uploadedFile) {
+            if (_this.checkFileExists(uploadedFile)) {//如果已存在就不添加了
+                return;
+            }
+            if (uploadedFile.path) { //如果服务器返回的是Object，就直接返回
+                files.push(uploadedFile)
+            } else { //如果服务器返回的是名称，就直接返回
+                var ext = uploadedFile.substr(uploadedFile.lastIndexOf('.') + 1).toLowerCase()
+                var item = {
+                    ext: ext,
+                    isFolder: false,
+                    name: uploadedFile,
+                    path: currentPath + uploadedFile
+                }
+                files.push(item)
+            }
+        })
+        var newFiles = this.state.file.concat(files)
+
+        this.setState({
+            file: newFiles
+        })
+        this.hideUploader()
     },
     clearSelectedItem(){
         this.setState({
@@ -146,7 +181,7 @@ var Cloud = React.createClass({
             rename(query,
                 function (res) {
                     var files = []
-                    _.each(_this.state.file,function (file) {
+                    _.each(_this.state.file, function (file) {
                         if (file.name === _this.state.selectedItem) {
                             files.push(res) //
                         } else {
@@ -242,18 +277,18 @@ var Cloud = React.createClass({
             this.prePasteFile(type)
         } else if (type === 'paste') {
             this.doPaste()
-        } else if (type === 'upload'){
+        } else if (type === 'upload') {
             this.showUploader()
         }
     },
     showUploader(){
         this.setState({
-            showUploader:true
+            showUploader: true
         })
     },
     hideUploader(){
         this.setState({
-            showUploader:false
+            showUploader: false
         })
     },
     prePasteFile(type){

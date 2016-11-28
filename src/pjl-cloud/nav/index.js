@@ -40,7 +40,6 @@ var Nav = React.createClass({
         _.each(path, function (o, i) {
             if (o !== '') {
                 to = to + "/" + o
-                console.log("to  ", to)
                 nodes.push(<NavItem key={i} title={o} to={to} onClick={onChange}/>)
             }
         })
