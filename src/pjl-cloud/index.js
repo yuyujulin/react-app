@@ -105,7 +105,8 @@ var Cloud = React.createClass({
             if (uploadedFile.path) { //如果服务器返回的是Object，就直接返回
                 files.push(uploadedFile)
             } else { //如果服务器返回的是名称，就直接返回
-                var ext = uploadedFile.substr(uploadedFile.lastIndexOf('.') + 1).toLowerCase()
+                var ext = uploadedFile.substr(uploadedFile.lastIndexOf('.')).toLowerCase()
+
                 var item = {
                     ext: ext,
                     isFolder: false,

@@ -24,6 +24,7 @@ function getIcon(ext, isFolder) {
             return (<i className='iconfont icon-fs icon-fs-code'>&#xe61a;</i>)
 
         case '.jpg':
+        case '.jpeg':
         case '.png':
         case '.gif':
             return (<i className='iconfont icon-fs icon-fs-picture'>&#xe60a;</i>)
@@ -43,15 +44,29 @@ function getIcon(ext, isFolder) {
         case '.pptx':
             return (<i className='iconfont icon-fs icon-fs-ppt'>&#xe61b;</i>)
 
+        case '.wav':
+        case '.wma':
+        case '.aac':
         case '.mp3':
         case '.3gp':
         case '.agg':
+        case '.flac':
+        case '.ape':
+        case '.mid':
+        case '.ogg':
             return (<i className='iconfont icon-fs icon-fs-ppt'>&#xe61d;</i>)
 
+        case '.wmv':
         case '.mp4':
+        case '.mkv':
+        case '.mov':
         case '.avi':
+        case '.asf':
         case '.rmvb':
         case '.rm':
+        case '.flv':
+        case '.3gp':
+        case '.vob':
             return (<i className='iconfont icon-fs icon-fs-ppt'>&#xe61e;</i>)
 
         case '.java':
