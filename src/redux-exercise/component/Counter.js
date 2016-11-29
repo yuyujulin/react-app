@@ -27,9 +27,9 @@ class Counter extends Component{
             <p>
                 Clicked: {value} times
                 {' '}
-                <button onClick={onIncrement}>+</button>
+                <button onClick={onIncrement} style={{width:'50px'}}>+</button>
                 {' '}
-                <button onClick={onDecrement}>-</button>
+                <button onClick={onDecrement} style={{width:'50px'}}>-</button>
                 {' '}
                 <button onClick={this.incrementIfOdd}>Increment if odd</button>
                 {' '}

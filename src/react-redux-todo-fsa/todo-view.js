@@ -10,24 +10,20 @@ import {addItem, removeItem, toggleStatus, changeStatusToShow} from './action'
 var Todo = React.createClass({
     render(){
         var _this = this
-        const {items, dispatch, statusToShow} =  this.props
+        const {items, dispatch} =  this.props
         var nodes = items.map(function (item, index) {
-            var node = null;
-            if (statusToShow === 'all' || (statusToShow === 'active' && item.active) || (statusToShow === 'completed' && !item.active)) {
-                node = (
-                    <p key={index}>
+            return (
+                <p key={index}>
                         <span onClick={(e) => dispatch(toggleStatus(item.name))}
                               style={{textDecoration: item.active ? '' : 'line-through'}}>
                             {item.name}
                         </span>
-                        <button onClick={(e) =>
-                            _this.handleRemove(item.name)
-                        }>删除
-                        </button>
-                    </p>
-                )
-            }
-            return node
+                    <button onClick={(e) =>
+                        _this.handleRemove(item.name)
+                    }>删除
+                    </button>
+                </p>
+            )
         })
 
         return (
@@ -38,12 +34,12 @@ var Todo = React.createClass({
                     {nodes}
                 </div>
                 <div>
-                    <button onClick={(e) => dispatch(changeStatusToShow('all'))}>all</button>
+                    <button onClick={(e) => dispatch(changeStatusToShow('ALL'))}>all</button>
                     --
-                    <button onClick={(e) => dispatch(changeStatusToShow('active'))}>active
+                    <button onClick={(e) => dispatch(changeStatusToShow('ACTIVE'))}>active
                     </button>
                     --
-                    <button onClick={(e) => dispatch(changeStatusToShow('completed'))}>completed
+                    <button onClick={(e) => dispatch(changeStatusToShow('COMPLETED'))}>completed
                     </button>
                 </div>
             </div>

@@ -49,8 +49,7 @@ const Sider = React.createClass({
                       mode="inline"
                 >
                     <Menu.Item key="todomvc"><Link activeStyle={{color: 'red'}} to="todomvc">TODO-MVC</Link></Menu.Item>
-                    <Menu.Item key="component"><Link activeStyle={{color: 'red'}}
-                                                     to="component">自定义组件</Link></Menu.Item>
+                    <Menu.Item key="component"><Link activeStyle={{color: 'red'}} to="component">自定义组件</Link></Menu.Item>
                     <Menu.Item key="student"><Link activeStyle={{color: 'red'}} to="student">学生信息管理系统</Link></Menu.Item>
 
                 </Menu>

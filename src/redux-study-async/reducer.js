@@ -60,5 +60,4 @@ var fs = function (state, action) {
 //合并reducer
 export  default combineReducers({
     todo,
-    fs
-})
+R})

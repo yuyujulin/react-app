@@ -3,14 +3,14 @@
  */
 import {combineReducers} from 'redux'
 
-const defaultState = {
+const defaultTodoMVCState = {
     name: 'todo-mvc',
-    statusToShow: 'all',
+    statusToShow: 'ALL',
     items: [{name: 'aaa', active: false}, {name: 'bbb', active: true},]
 }
 
 //单一的reducer，等待传入的action来处理数据
-const todo = (state = defaultState, action = {}) => {
+const todo = (state = defaultTodoMVCState, action = {}) => {
     const {items} = state
     const {type, payload} = action
 

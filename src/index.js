@@ -21,7 +21,7 @@ var React = require('react'),
 
 // import RouteStudy2 from './route-study2'
 
-import CloudRouter from './pjl-cloud'
+// import CloudRouter from './pjl-cloud'
 
 // import BackboneStudy from './backbone-study'
 
@@ -29,9 +29,12 @@ import CloudRouter from './pjl-cloud'
 
 import ReactReduxTodo from './react-redux-todo-fsa' // flux standard action
 
+import ReduxExcercise from './redux-exercise' //自执行的
+
 require('./index.css')
 
 ReactDOM.render(
-    <CloudRouter />,
+    <ReactReduxTodo />,
     document.getElementById('root')
 );
+
