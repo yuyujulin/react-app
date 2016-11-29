@@ -1,135 +1,135 @@
 /**
- * Created by Administrator on 2016/11/13 0013.
+ * Created by Administrator on 2016/11/1 0001.
  */
-/**
- * Created by Administrator on 2016/11/13/013.
- */
-import React from 'react';  //var React = require("React")
-import ReactDOM from 'react-dom';
-import Todolist from "./todolist/index.js"
 
-function id() {
-    return String(Math.random()).slice(2) + String(Math.random()).slice(2);
-}
+import React from 'react'
 
-var TodoMVC = React.createClass({
-    getInitialState(){
-        return ({
+import TodoList from './todo-list'
+
+var Todo = React.createClass({
+    getInitialState: function () {
+        return {
             items: [
-                {id: id(), text: "p1", type: "active"},
-                {id: id(), text: "p2", type: "active"},
-                {id: id(), text: "p3", type: "completed"},
-                {id: id(), text: "p4", type: "active"},
-                {id: id(), text: "p5", type: "completed"},
-                {id: id(), text: "p6", type: "active"},
-                {id: id(), text: "p7", type: "completed"},
-                {id: id(), text: "p8", type: "active"},
-                {id: id(), text: "p9", type: "active"}
+                {text: 'aaa', id: 0, type: 'active'},
+                {text: 'bbb', id: 1, type: 'complete'},
+                {text: 'ccc', id: 2, type: 'active'},
             ],
-            value: "p1",
-            type: "active"
-        })
-    },
-    render(){
-        var items = this.state.items;
-        var type = this.state.type;
-        var arr = [];
-        for (var i = 0; i < items.length; i++) {
-            if (items[i].type === type || type === "all") {
-                arr.push(items[i])
-            }
+            value: 'inp',
+            type: 'active'
         }
+    },
+    render: function () {
+        var that = this
+
+        var filteredItems = []
+        if (this.state.type === 'all') {
+            filteredItems = this.state.items
+        } else {
+            this.state.items.map(function (item) {
+                if (item.type === that.state.type) {
+                    filteredItems.push(item);
+                } else {
+
+                }
+            })
+        }
+
         return (
-            <div>
-                <input type="text" value={this.state.value} onChange={this.change}/>
-                <button style={{backgroundColor: "pink"}} onClick={this.add}>增加</button>
-                <Todolist items={arr} delete={this.delete} edit={this.edit}
-                          showType={this.showType} toggleType={this.toggleType}
-                />
-                <button style={{backgroundColor: this.state.type === "all" ? "red" : "#ccc"}} onClick={(e)=> {
-                    this.showType("all")
-                }}>all
-                </button>
-                <button style={{backgroundColor: this.state.type === "active" ? "red" : "#ccc"}} onClick={(e)=> {
-                    this.showType("active")
-                }}>active
-                </button>
-                <button style={{backgroundColor: this.state.type === "completed" ? "red" : "#ccc"}} onClick={(e)=> {
-                    this.showType("completed")
-                }}>completed
-                </button>
+            <div className="todo-mvc">
+                <h3>todos</h3>
+
+                <p>
+                    <input value={this.state.value} onChange={this.handleChange} onKeyPress={this.handleKeyPress}/>
+                    <button onClick={this.handleAdd}>提交</button>
+                </p>
+
+                <TodoList items={filteredItems} onDelete={this.handleDelete} onEdit={this.handleEdit}
+                          onToggleType={this.handleToggleType}/>
+
+                <p>
+                    <button style={{background: this.state.type == 'all' ? 'red' : '#dddddd'}}
+                            onClick={ (e) => this.setState({type: 'all'})}>all
+                    </button>
+                    <button style={{background: this.state.type == 'active' ? 'red' : '#dddddd'}}
+                            onClick={(e) => this.setState({type: 'active'})}>active
+                    </button>
+                    <button style={{background: this.state.type == 'complete' ? 'red' : '#dddddd'}}
+                            onClick={(e) => this.setState({type: 'complete'})}>complete
+                    </button>
+                </p>
             </div>
         )
     },
-    showType(str){
-        this.setState({
-            type: str
-        })
-    },
-    toggleType(obj){
-
-        var items = this.state.items;
-        for (var i = 0; i < items.length; i++) {
-            if (obj.id === items[i].id) {
-                items[i].text = obj.text
-                if (obj.type === "active") {
-                    obj.type = "completed"
-                } else {
-                    obj.type = "active"
-                }
-                items[i].type = obj.type
-                break;
-            }
+    handleKeyPress(e){
+        if (e.key === "Enter") {
+            this.handleAdd();
         }
+    },
+    handleAdd: function () {
+        var items = this.state.items,
+            text = this.state.value
+        console.log("adding... ", text)
+        items.push({
+            id: items.length,
+            text: text,
+            type: 'active'
+        })
         this.setState({
-            items: items
+            items: items,
+            value: ''
         })
     },
-    edit(obj){
-        var items = this.state.items;
-        for (var i = 0; i < items.length; i++) {
-            if (obj.id === items[i].id) {
-                items[i].text = obj.text
-                items[i].type = obj.type
-                break;
-            }
-
-        }
-        this.setState({
-            items: items
-        })
-    },
-    delete(obj){
-        var items = this.state.items;
-        var arr = [];
-
-        for (var i = 0; i < items.length; i++) {
-            if (obj.id !== items[i].id) {
-                arr.push(items[i])
-            }
-        }
-
-        this.setState({
-            items: arr
-        })
-    },
-    change(e){
+    handleChange: function (e) {
         this.setState({
             value: e.target.value
         })
     },
-    add(){
-        var obj = {};
-        obj.id = id();
-        obj.text = this.state.value;
-        obj.type = "active";
-        var items = this.state.items;
-        items.push(obj)
+    handleDelete: function (item) {
+        var items = this.state.items,
+            newItems = []
+
+        console.log("deleting... ", item)
+
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].id !== item.id) {
+                newItems.push(items[i])
+            }
+        }
+
         this.setState({
-            items: items
+            items: newItems
+        })
+    },
+    handleEdit(item){
+        console.log("editing... ", item)
+
+        var newItems = this.state.items.map(function (o) {
+            console.log(o)
+            if (o.id === item.id) {
+                o.text = item.text
+            }
+            return o
+        })
+
+        this.setState({
+            items: newItems
+        })
+    },
+    handleToggleType(item, type){
+        console.log("toggling type... ", item)
+
+        var newItems = this.state.items.map(function (o) {
+            console.log(o)
+            if (o.id === item.id) {
+                o.type = type
+            }
+            return o
+        })
+
+        this.setState({
+            items: newItems
         })
     }
+})
 
-});
-
-export default TodoMVC
+export default Todo
