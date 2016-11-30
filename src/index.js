@@ -9,7 +9,7 @@ import {Router, Route, IndexRoute, Link, hashHistory} from 'react-router'
 import {Menu, Switch} from 'antd'
 
 import Cloud from './pjl-cloud'
-import TodoMvc from './to-do'
+import TodoMvc from './todomvc'
 import Student from './antd-student'
 
 import 'antd/dist/antd.css'
@@ -41,10 +41,9 @@ const SideMenu = React.createClass({
                       selectedKeys={[this.state.current]}
                       mode="inline"
                 >
-                    <Menu.Item key="cloud"><Link activeStyle={{color: 'red'}} to="cloud">云盘</Link></Menu.Item>
+                    <Menu.Item key="cloud"><Link activeStyle={{color: 'red'}} to="cloud">Cloud Store</Link></Menu.Item>
                     <Menu.Item key="todomvc"><Link activeStyle={{color: 'red'}} to="todomvc">Todo MVC</Link></Menu.Item>
-                    <Menu.Item key="student"><Link activeStyle={{color: 'red'}} to="student">学生信息管理系统</Link></Menu.Item>
-
+                    <Menu.Item key="student"><Link activeStyle={{color: 'red'}} to="student">Student Manage</Link></Menu.Item>
                 </Menu>
             </div>
         )
@@ -54,9 +53,13 @@ const SideMenu = React.createClass({
 const App = React.createClass({
     render(){
         return (
-            <div>
-                <SideMenu/>
-                {this.props.children}
+            <div className="app">
+                <div className="side-menu">
+                    <SideMenu/>
+                </div>
+                <div className="container">
+                    {this.props.children}
+                </div>
             </div>
         )
     }

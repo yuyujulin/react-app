@@ -19,7 +19,7 @@ var React = require('react'),
 
 // import RouteStudy from './router-study'
 
-// import RouteStudy2 from './route-study2'
+// import RouteStudy2 from './route-sidemenu'
 
 // import CloudRouter from './pjl-cloud'
 

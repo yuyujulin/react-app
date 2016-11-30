@@ -5,6 +5,7 @@
 import React from 'react'
 
 import TodoList from './todo-list'
+import './index.css'
 
 var Todo = React.createClass({
     getInitialState: function () {
@@ -35,14 +36,16 @@ var Todo = React.createClass({
         }
 
         return (
-            <div className="todo-mvc">
+            <div className="app-todo-mvc">
                 <h3>todos</h3>
 
                 <p>
                     <input value={this.state.value} onChange={this.handleChange} onKeyPress={this.handleKeyPress}/>
-                    <button onClick={this.handleAdd}>提交</button>
+                    <button onClick={this.handleAdd}>添加</button>
                 </p>
 
+                <br/>
+                <br/>
                 <TodoList items={filteredItems} onDelete={this.handleDelete} onEdit={this.handleEdit}
                           onToggleType={this.handleToggleType}/>
 

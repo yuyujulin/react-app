@@ -9,6 +9,7 @@ import request from 'superagent'
 import _ from 'underscore'
 
 import 'antd/dist/antd.css'
+import './index.css'
 
 
 const FormItem = Form.Item
@@ -97,13 +98,15 @@ var AntTest = React.createClass({
         var selectedOneRow = selectedRowKeys.length == 1
 
         return (
-            <div className="dongnao">
-                <h3>动脑学院信息系统</h3>
-                <Button icon='plus' type='primary' onClick={this.handleAdd}>增加</Button>&nbsp;
-                <Button icon='edit' type='ghost' disabled={!selectedOneRow} onClick={this.handleEdit}>修改</Button>&nbsp;
-                <Button icon='delete' disabled={!selectedOneRow} onClick={this.handleDelete}>删除</Button>
-
-                <div className="content">
+            <div className="app-student">
+                <h3>学生信息管理</h3>
+                <div className="app-student-operation">
+                    <Button icon='plus' type='primary' onClick={this.handleAdd}>增加</Button>&nbsp;
+                    <Button icon='edit' type='ghost' disabled={!selectedOneRow}
+                            onClick={this.handleEdit}>修改</Button>&nbsp;
+                    <Button icon='delete' disabled={!selectedOneRow} onClick={this.handleDelete}>删除</Button>
+                </div>
+                <div className="app-student-content">
                     <Table rowSelection={rowSelection} loading={this.state.loading} columns={header}
                            dataSource={this.state.items}></Table>
                 </div>

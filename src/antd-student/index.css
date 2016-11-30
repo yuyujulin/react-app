@@ -1,0 +1,16 @@
+.app-student h3 {
+    line-height: 50px;
+    text-align: center;
+}
+
+.app-student .app-student-operation {
+    margin-bottom: 10px;
+}
+
+.ant-table-pagination {
+    float: left;
+}
+
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+    padding: 10px 8px;
+}

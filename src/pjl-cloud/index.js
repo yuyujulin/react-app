@@ -46,11 +46,11 @@ var Cloud = React.createClass({
         } = this.state
 
         return (
-            <div className="app"
+            <div className="app-cloud"
                  onContextMenu={this.handleContextMenu}
                  onMouseDown={this.mouseDown}
             >
-                <h1 className="app-title">PJL 云盘</h1>
+                <h1 className="app-cloud-title">我的云盘</h1>
                 <Nav path={path} onChange={(path) => this.handleNavItemClick(path)}/>
                 <FileList
                     file={file}
