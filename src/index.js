@@ -43,7 +43,8 @@ const SideMenu = React.createClass({
                 >
                     <Menu.Item key="cloud"><Link activeStyle={{color: 'red'}} to="cloud">Cloud Store</Link></Menu.Item>
                     <Menu.Item key="todomvc"><Link activeStyle={{color: 'red'}} to="todomvc">Todo MVC</Link></Menu.Item>
-                    <Menu.Item key="student"><Link activeStyle={{color: 'red'}} to="student">Student Manage</Link></Menu.Item>
+                    <Menu.Item key="student"><Link activeStyle={{color: 'red'}} to="student">Student
+                        Manage</Link></Menu.Item>
                 </Menu>
             </div>
         )
@@ -70,8 +71,10 @@ const AppRouter = React.createClass({
         return (
             <Router history={hashHistory}>
                 <Route path='/' component={App}>
-                    <IndexRoute component={Cloud}/>
-                    <Route path='cloud' component={Cloud}/>
+                    <IndexRoute component={Student}/>
+                    <Route path='cloud' component={Cloud}>
+                        <Route path='cloud/*' component={Cloud}/>
+                    </Route>
                     <Route path='todomvc' component={TodoMvc}/>
                     <Route path='student' component={Student}/>
                 </Route>

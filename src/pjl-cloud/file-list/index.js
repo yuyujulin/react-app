@@ -120,10 +120,11 @@ var FileItem = React.createClass({
         )
     },
     handleDoubleClick(){
-        const {item} = this.props
+        const {item, clearSelectedItem, handleHashHistoryChange} = this.props
         if (item.isFolder) {
-            hashHistory.push(item.path)
-            this.props.clearSelectedItem()
+            console.log('handle folder double click...')
+            handleHashHistoryChange(item.path)
+            clearSelectedItem()
         } else {
             window.open(host + item.path)
         }
@@ -141,7 +142,7 @@ var FileItem = React.createClass({
 
 var FileList = React.createClass({
     render(){
-        const {onChange, loading, selectedItem, onPick, clearSelectedItem} = this.props
+        const {onChange, loading, selectedItem, onPick, clearSelectedItem, handleHashHistoryChange} = this.props
         var nodes = this.props.file.map(function (obj) {
             return (
                 <FileItem
@@ -150,6 +151,7 @@ var FileList = React.createClass({
                     onChange={onChange}
                     selectedItem={selectedItem}
                     clearSelectedItem={clearSelectedItem}
+                    handleHashHistoryChange={handleHashHistoryChange}
                     onPick={onPick}
                 />
             )

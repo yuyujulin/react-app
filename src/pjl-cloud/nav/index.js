@@ -47,7 +47,7 @@ var Nav = React.createClass({
         return (
             <div className="nav">
                 <Breadcrumb>
-                    <NavItem title='Home' to='/' onClick={onChange}/>
+                    <NavItem title='Home' to='' onClick={onChange}/>
                     {nodes}
                 </Breadcrumb>
             </div>

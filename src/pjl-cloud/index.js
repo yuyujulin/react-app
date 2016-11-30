@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import {Modal, message} from  'antd'
-import {Router, Route, hashHistory} from 'react-router';
+import {hashHistory} from 'react-router';
 import _ from 'underscore'
 
 import FileUploader from './file-uploader'
@@ -51,7 +51,7 @@ var Cloud = React.createClass({
                  onMouseDown={this.mouseDown}
             >
                 <h1 className="app-cloud-title">我的云盘</h1>
-                <Nav path={path} onChange={(path) => this.handleNavItemClick(path)}/>
+                <Nav path={path} onChange={(path) => this.handleHashHistoryChange(path)}/>
                 <FileList
                     file={file}
                     path={path}
@@ -60,6 +60,7 @@ var Cloud = React.createClass({
                     pastSourcePath={pastSourcePath}
                     onPick={(itemName) => this.pickItem(itemName)}
                     clearSelectedItem={this.clearSelectedItem}
+                    handleHashHistoryChange={this.handleHashHistoryChange}
                 />
                 <ContextMenu
                     display={contextMenuProps.display}
@@ -90,8 +91,12 @@ var Cloud = React.createClass({
             </div>
         )
     },
-    handleNavItemClick(path){
-        hashHistory.push(path)
+    handleHashHistoryChange(folderName){
+        console.log('this.props.route.path', this.props.route.path)
+        console.log('folderName', folderName)
+        var routePath = this.props.route.path + '/' + folderName
+        console.log(routePath)
+        hashHistory.push(routePath)
     },
     updateFiles(uploadedFiles){
         console.log('updating files....')
@@ -404,13 +409,15 @@ var Cloud = React.createClass({
     },
     componentDidMount(){
         const {splat} = this.props.params
-        console.log("componentDidMount getFile")
-        this.getFile(splat)
+        var path = splat ? splat.substring(splat.indexOf('cloud/')) : ''
+        console.log('path======componentDidMount=====', path)
+        this.getFile(path)
     },
     componentWillReceiveProps(nextProps){
-        const {splat} = nextProps.params
-        console.log("componentWillReceiveProps getFile")
-        this.getFile(splat)
+        // const {splat} = nextProps.params
+        // var path = splat ? splat.substring(splat.indexOf('cloud/')) : ''
+        // console.log('path======componentDidMount=====', path)
+        // this.getFile(path)
     },
     showContextMenu(e){
         console.log("showing context menu...")
@@ -454,16 +461,4 @@ var Cloud = React.createClass({
     }
 })
 
-var CloudRouter = React.createClass({
-    render(){
-        return (
-            <Router history={hashHistory}>
-                <Route path="*" component={Cloud}/>
-            </Router>
-        )
-    }
-})
-
-export default CloudRouter
-
-
+export default Cloud
