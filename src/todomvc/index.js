@@ -3,6 +3,7 @@
  */
 
 import React from 'react'
+import _ from 'underscore'
 
 import TodoList from './todo-list'
 import './index.css'
@@ -26,11 +27,9 @@ var Todo = React.createClass({
         if (this.state.type === 'all') {
             filteredItems = this.state.items
         } else {
-            this.state.items.map(function (item) {
+            _.each(this.state.items, function (item) {
                 if (item.type === that.state.type) {
                     filteredItems.push(item);
-                } else {
-
                 }
             })
         }
@@ -50,13 +49,13 @@ var Todo = React.createClass({
                           onToggleType={this.handleToggleType}/>
 
                 <p>
-                    <button style={{background: this.state.type == 'all' ? 'red' : '#dddddd'}}
+                    <button style={{background: this.state.type === 'all' ? 'red' : '#dddddd'}}
                             onClick={ (e) => this.setState({type: 'all'})}>all
                     </button>
-                    <button style={{background: this.state.type == 'active' ? 'red' : '#dddddd'}}
+                    <button style={{background: this.state.type === 'active' ? 'red' : '#dddddd'}}
                             onClick={(e) => this.setState({type: 'active'})}>active
                     </button>
-                    <button style={{background: this.state.type == 'complete' ? 'red' : '#dddddd'}}
+                    <button style={{background: this.state.type === 'complete' ? 'red' : '#dddddd'}}
                             onClick={(e) => this.setState({type: 'complete'})}>complete
                     </button>
                 </p>

@@ -3,7 +3,6 @@
  */
 import React from 'react'
 import Loading from '../loading'
-import {hashHistory} from 'react-router'
 
 import './index.css'
 
@@ -120,17 +119,16 @@ var FileItem = React.createClass({
         )
     },
     handleDoubleClick(){
-        const {item, clearSelectedItem, handleHashHistoryChange} = this.props
+        const {item, clearSelectedItem, handleFolderDbClick} = this.props
         if (item.isFolder) {
             console.log('handle folder double click...')
-            handleHashHistoryChange(item.path)
+            handleFolderDbClick(item.name)
             clearSelectedItem()
         } else {
             window.open(host + item.path)
         }
     },
     handleMouseDown(e){
-        console.log("文件项点击")
         const {onPick, item} = this.props
         onPick(item.name)
         if (e.button === 0) { //鼠标左键点击, 则需要阻止桌面的点击，来放置解除选择
@@ -142,7 +140,7 @@ var FileItem = React.createClass({
 
 var FileList = React.createClass({
     render(){
-        const {onChange, loading, selectedItem, onPick, clearSelectedItem, handleHashHistoryChange} = this.props
+        const {onChange, loading, selectedItem, onPick, clearSelectedItem, handleFolderDbClick} = this.props
         var nodes = this.props.file.map(function (obj) {
             return (
                 <FileItem
@@ -151,7 +149,7 @@ var FileList = React.createClass({
                     onChange={onChange}
                     selectedItem={selectedItem}
                     clearSelectedItem={clearSelectedItem}
-                    handleHashHistoryChange={handleHashHistoryChange}
+                    handleFolderDbClick={handleFolderDbClick}
                     onPick={onPick}
                 />
             )

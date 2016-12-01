@@ -51,7 +51,7 @@ var Cloud = React.createClass({
                  onMouseDown={this.mouseDown}
             >
                 <h1 className="app-cloud-title">我的云盘</h1>
-                <Nav path={path} onChange={(path) => this.handleHashHistoryChange(path)}/>
+                <Nav path={path} onChange={(path) => this.handleNavItemClick(path)}/>
                 <FileList
                     file={file}
                     path={path}
@@ -60,7 +60,7 @@ var Cloud = React.createClass({
                     pastSourcePath={pastSourcePath}
                     onPick={(itemName) => this.pickItem(itemName)}
                     clearSelectedItem={this.clearSelectedItem}
-                    handleHashHistoryChange={this.handleHashHistoryChange}
+                    handleFolderDbClick={this.handleFolderDbClick}
                 />
                 <ContextMenu
                     display={contextMenuProps.display}
@@ -90,13 +90,6 @@ var Cloud = React.createClass({
                 />
             </div>
         )
-    },
-    handleHashHistoryChange(folderName){
-        console.log('this.props.route.path', this.props.route.path)
-        console.log('folderName', folderName)
-        var routePath = this.props.route.path + '/' + folderName
-        console.log(routePath)
-        hashHistory.push(routePath)
     },
     updateFiles(uploadedFiles){
         console.log('updating files....')
@@ -407,20 +400,47 @@ var Cloud = React.createClass({
         }
         getFileList(path, scb, ecb)
     },
+    handleNavItemClick(path){
+        console.log('nav item clicked...', path)
+        hashHistory.push('/cloud' + path)
+    },
+    handleFolderDbClick(folderName){
+        const {pathname} = this.props.location
+        hashHistory.push(pathname + '/' + folderName)
+    },
     componentDidMount(){
-        const {splat} = this.props.params
-        var path = splat ? splat.substring(splat.indexOf('cloud/')) : ''
+        const {pathname} = this.props.location
+
+        var path = '/'
+        if (pathname) {
+            var p = pathname.indexOf('/cloud/');
+            path = p >= 0 ? pathname.substring(p + '/cloud/'.length) : path
+        }
+
         console.log('path======componentDidMount=====', path)
         this.getFile(path)
     },
     componentWillReceiveProps(nextProps){
-        // const {splat} = nextProps.params
-        // var path = splat ? splat.substring(splat.indexOf('cloud/')) : ''
-        // console.log('path======componentDidMount=====', path)
-        // this.getFile(path)
+        const {pathname} = nextProps.location
+        var path = '/'
+        if (pathname) {
+            var p = pathname.indexOf('/cloud/');
+            path = p >= 0 ? pathname.substring(p + '/cloud/'.length) : path
+        }
+
+        console.log('path======componentWillReceiveProps=====', path)
+        this.getFile(path)
     },
     showContextMenu(e){
-        console.log("showing context menu...")
+        console.log('e.clientX', e.clientX)
+        console.log('e.clientY', e.clientY)
+
+        console.log('e.pageX', e.pageX)
+        console.log('e.pageY', e.pageY)
+
+        console.log('e.offsetX', e.offsetX)
+        console.log('e.offsetY', e.offsetY)
+
         this.setState({
             contextMenuProps: {
                 display: true,
@@ -438,14 +458,12 @@ var Cloud = React.createClass({
         })
     },
     pickItem(itemName){
-        console.log("pick Item..." + itemName)
         this.setState({
             selectedItem: itemName,
             newValue: itemName
         })
     },
     unPickItem(){
-        console.log("unPick Item...")
         this.setState({
             selectedItem: ''
         })

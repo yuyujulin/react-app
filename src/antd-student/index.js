@@ -2,7 +2,7 @@
  * Created by Administrator on 2016/11/5 0005.
  */
 import React from  'react'
-import {Button, Col, Row, Table, Rate, Modal, Form, Input, Radio, Alert, message} from  'antd'
+import {Button, Table, Modal, Form, Input, Radio, Alert, message} from  'antd'
 
 import request from 'superagent'
 
@@ -23,11 +23,6 @@ var header = [
     {title: 'sex', dataIndex: 'sex'},
     {
         title: 'single', dataIndex: 'single',
-        // render: function (single, obj) {
-        //     return (
-        //         <div>{single ? '单身狗' : '恩爱狗'}</div>
-        //     )
-        // },
         render: (single, obj) => (
             <div>{obj.name} 这只 {single ? '单身狗' : '恩爱狗'} 今年 {obj.age} 岁了</div>
         )
@@ -35,38 +30,7 @@ var header = [
     {title: 'url', dataIndex: 'url'}
 ]
 
-var data = [
-    {
-        "id": 31,
-        "name": "聊天室888",
-        "age": 1,
-        "sex": "girl",
-        "single": true,
-        "url": "http://101.200.129.112:9527/react1/student/31/"
-    },
-    {
-        "id": 32,
-        "name": "fdadd",
-        "age": 11,
-        "sex": "男",
-        "single": true,
-        "url": "http://101.200.129.112:9527/react1/student/32/"
-    }
-]
-
 const api = 'http://101.200.129.112:9527/react1/student/'
-
-var Title = React.createClass({
-    render(){
-        return (
-            <div>
-                <Button>
-                    删除
-                </Button>
-            </div>
-        )
-    }
-})
 
 var AntTest = React.createClass({
     getInitialState(){
@@ -89,13 +53,13 @@ var AntTest = React.createClass({
         this.setState({selectedRowKeys});
     },
     render(){
-        const {loading, selectedRowKeys} = this.state;
+        const {selectedRowKeys} = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
         };
 
-        var selectedOneRow = selectedRowKeys.length == 1
+        var selectedOneRow = selectedRowKeys.length === 1
 
         return (
             <div className="app-student">
@@ -112,7 +76,7 @@ var AntTest = React.createClass({
                 </div>
 
                 <Modal visible={this.state.showForm} onCancel={(e) => this.setState({showForm: false})}
-                       onOk={this.handleSave} title={this.state.action == 'add' ? '增加学生信息' : '修改学生信息'}>
+                       onOk={this.handleSave} title={this.state.action === 'add' ? '增加学生信息' : '修改学生信息'}>
                     <div style={{display: this.state.showError ? 'block' : 'none'}}>
                         <Alert
                             message="Error"
@@ -189,7 +153,7 @@ var AntTest = React.createClass({
             sex: this.state.sex,
             single: this.state.single
         }
-        if (this.state.action == 'add') {
+        if (this.state.action === 'add') {
             request.post(api).send(data).end(function (err, res) {
                 if (err) {
                     return console.log(err)
@@ -206,12 +170,12 @@ var AntTest = React.createClass({
                 message.success("成功添加数据" + item.name)
             })
         }
-        if (this.state.action == 'edit') {
+        if (this.state.action === 'edit') {
             const {items, selectedRowKeys} = this.state
             const selectedItemKey = selectedRowKeys[0]
 
             var selectedItem = _.find(items, function (item) {
-                return item.key == selectedItemKey
+                return item.key === selectedItemKey
             })
 
             var editUrl = api + selectedItem.key + '/'
@@ -225,8 +189,8 @@ var AntTest = React.createClass({
                     return
                 }
                 var newItems = []
-                items.map(function (item) {
-                    if (item.key == selectedItemKey) {
+                _.each(items, function (item) {
+                    if (item.key === selectedItemKey) {
                         var newItem = res.body
                         newItem.key = newItem.id
                         newItems.push(newItem)
@@ -259,12 +223,11 @@ var AntTest = React.createClass({
 
     },
     handleEdit(){
-        var that = this;
         const {items, selectedRowKeys} = this.state
         const selectedItemKey = selectedRowKeys[0]
         console.log("selectedItemKey", selectedItemKey)
         var selectedItem = _.find(items, function (item) {
-            return item.key == selectedItemKey;
+            return item.key === selectedItemKey;
         })
         console.log("selectedItem", selectedItem)
 
@@ -285,8 +248,8 @@ var AntTest = React.createClass({
         const selectedItemKey = selectedRowKeys[0]
         var selectedItemName = ''
         var newItems = []
-        items.map(function (item) {
-            if (item.key == selectedItemKey) {
+        _.each(items, function (item) {
+            if (item.key === selectedItemKey) {
                 selectedItemName = item.name
             } else {
                 newItems.push(item)

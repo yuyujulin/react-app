@@ -16,7 +16,7 @@ var TodoItem = React.createClass({
                 {this.props.item.text}
                 <button onClick={(e) => this.props.delete(this.props.item)}>删除</button>
                 <button
-                    onClick={(e) => this.props.toggleType(this.props.item, this.props.item.type == 'active' ? 'complete' : 'active')}>
+                    onClick={(e) => this.props.toggleType(this.props.item, this.props.item.type === 'active' ? 'complete' : 'active')}>
                     toggle-->{this.props.item.type }
                 </button>
                 <br/>
