@@ -2,6 +2,7 @@
  * Created by Administrator on 2016/11/20 0020.
  */
 import {combineReducers} from 'redux'
+import _ from 'underscore'
 
 //单一的reducer，等待传入的action来处理数据
 
@@ -12,38 +13,38 @@ const initState = {
 }
 
 var todo = function (state = initState, action) {
+    const {items} = state
 
     switch (action.type) {
+        case 'reset':
+            return Object.assign({},state,{items:action.items})
         case 'add':
-            var items = state.items
-            items.push({name: action.itemName, active: true})
+            items.push({name: action.text, active: true})
             // return Object.assign({}, state, {items: items})  //这个语句不行，因为items的地址与原state的地址没发生变化
             // 返回对象里面的属性必须与原state的属性的地址都必须不一样，因此这里用[...items] 新生成一个数组
             return Object.assign({}, state, {items: [...items]})
         case 'remove':
-            var items = state.items,
-                json = []
-
-            for (var i = 0; i < items.length; i++) {
-                if (items[i].name != action.itemName) {
-                    json.push(items[i])
+            var json = []
+            _.each(items, function (item) {
+                if (item.name !== action.text) {
+                    json.push(item)
                 }
-            }
+            })
+
             return Object.assign({}, state, {items: json})
         case 'changeStatusToShow':
             return Object.assign({}, state, {statusToShow: action.statusToShow})
         case 'toggleItemStatus':
-            var items = state.items
-
-            for (var i = 0; i < items.length; i++) {
-                if (items[i].name == action.itemName) {
-                    items[i].active = !items[i].active
+            _.each(items, function (item) {
+                if (item.name === action.itemName) {
+                    item.active = !item.active
                 }
-            }
-            return Object.assign({}, state, {items: [...items]})
-    }
+            })
 
-    return state
+            return Object.assign({}, state, {items: [...items]})
+        default:
+            return state
+    }
 }
 
 var fs = function (state, action) {
@@ -59,5 +60,5 @@ var fs = function (state, action) {
 
 //合并reducer
 export  default combineReducers({
-    todo,
-R})
+    todo, fs
+})

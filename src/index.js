@@ -11,6 +11,7 @@ import {Menu, Switch} from 'antd'
 import Cloud from './pjl-cloud'
 import TodoMvc from './todomvc'
 import Student from './antd-student'
+import ReduxAsync from './redux-study-async'
 
 import 'antd/dist/antd.css'
 import './index.css'
@@ -43,8 +44,8 @@ const SideMenu = React.createClass({
                 >
                     <Menu.Item key="cloud"><Link activeStyle={{color: 'red'}} to="cloud">Cloud Store</Link></Menu.Item>
                     <Menu.Item key="todomvc"><Link activeStyle={{color: 'red'}} to="todomvc">Todo MVC</Link></Menu.Item>
-                    <Menu.Item key="student"><Link activeStyle={{color: 'red'}} to="student">Student
-                        Manage</Link></Menu.Item>
+                    <Menu.Item key="student"><Link activeStyle={{color: 'red'}} to="student">Student Manage</Link></Menu.Item>
+                    <Menu.Item key="redux-async"><Link activeStyle={{color: 'red'}} to="redux-async">Redux Async</Link></Menu.Item>
                 </Menu>
             </div>
         )
@@ -79,6 +80,7 @@ const AppRouter = React.createClass({
                     <Route path='/cloud' component={Cloud}/>
                     <Route path='todomvc' component={TodoMvc}/>
                     <Route path='student' component={Student}/>
+                    <Route path='redux-async' component={ReduxAsync}/>
                 </Route>
             </Router>
         )

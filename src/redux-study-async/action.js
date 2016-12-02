@@ -27,14 +27,39 @@ export function add(text) {
 export function remove(text) {
     return {
         type: 'remove',
+        text
     }
 }
 
+
+export function reset(items) {
+    return {
+        type : 'reset',
+        items:items
+    }
+}
+
+
 export function get(query){
     return function (dispatch) {
-        request.get('').end(function(err, res){
-            console.log(query)
-            console.log(res)
-        })
+        console.log(query)
+        request
+            .get('http://101.200.129.112:9527/react1/student/')
+            .end(function (err, res) {
+                console.log(res.body)
+                dispatch(reset(res.body))
+            })
+    }
+}
+
+export function login(query) {
+    return function (dispatch) {
+        console.log(query)
+        request
+            .get('http://101.200.129.112:9527/deploy/login/')
+            .end(function (err, res) {
+                console.log(res.body)
+                dispatch(reset(res.body))
+            })
     }
 }

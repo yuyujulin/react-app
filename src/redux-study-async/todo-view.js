@@ -4,7 +4,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import {active, activeItem, remove, add} from './action'
+import {active, activeItem, remove} from './action'
 
 //因为只有render方法，没有处理数据的逻辑了，现在我们把他叫
 //展示性组件
@@ -14,7 +14,7 @@ var Todo = React.createClass({
         const {items, dispatch, statusToShow} =  this.props
         var nodes = items.map(function (item, index) {
             var node = null;
-            if (statusToShow == 'all' || (statusToShow == 'active' && item.active) || (statusToShow == 'completed' && !item.active)) {
+            if (statusToShow === 'all' || (statusToShow === 'active' && item.active) || (statusToShow === 'completed' && !item.active)) {
                 node = (
                     <p key={index}>
                         <span onClick={(e) => dispatch(activeItem(item.name))}
@@ -51,17 +51,18 @@ var Todo = React.createClass({
         )
     },
     componentDidMount(){
-
+        const {get} = this.props
+        get({aaa:111,bbb:222})
     },
     handleAdd(){
-        const {dispatch} = this.props
+        const {add} = this.props
         var value = ReactDOM.findDOMNode(this.refs.input).value
         add(value)
     },
     handleRemove(name){
         const {dispatch} = this.props
         console.log('removing ' + name)
-        remove(name)
+        dispatch(remove(name))
     }
 })
 

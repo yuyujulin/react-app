@@ -4,6 +4,9 @@
 import {connect} from 'react-redux'
 import Todo from './todo-view'
 
+import {add, get} from './action'
+import {bindActionCreators} from 'redux'
+
 var mapState2Props = function (store) {
     return {
         items: store.todo.items,
@@ -14,7 +17,9 @@ var mapState2Props = function (store) {
 
 var dispatch2props = function (dispatch) {
     return {
-        dispatch
+        dispatch,
+        add:(text)=>dispatch(add(text)),
+        get:bindActionCreators(get, dispatch)
     }
 }
 //connect连接器
