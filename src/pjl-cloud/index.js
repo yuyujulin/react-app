@@ -240,7 +240,7 @@ var Cloud = React.createClass({
 
         const {selectedItem} = this.state
 
-        this.hideContextMenu()
+        this.hideCustomContextMenu()
 
         if ((type === 'rename' || type === 'delete' || type === 'cut' || type === 'copy') && !selectedItem) {
             Modal.error({
@@ -382,6 +382,33 @@ var Cloud = React.createClass({
     handleContextMenu(e){
         e.preventDefault()
         e.stopPropagation()
+        this.showCustomContextMenu(e)
+    },
+    showCustomContextMenu(event){
+        var e = event || window.event
+
+        this.setState({
+            contextMenuProps: {
+                display: true,
+                x: e.clientX,
+                y: e.clientY
+            }
+        })
+    },
+    hideCustomContextMenu(){
+        console.log("hiding custom context menu...")
+        this.setState({
+            contextMenuProps: {
+                display: false,
+            }
+        })
+    },
+    mouseDown(e){
+        if (e.button !== 2) { //不是右键点击的时候，隐藏右键菜单
+            console.log('桌面点击')
+            this.hideCustomContextMenu()
+            this.unPickItem()
+        }
     },
     getFile(path){
         var that = this
@@ -431,32 +458,6 @@ var Cloud = React.createClass({
         console.log('path======componentWillReceiveProps=====', path)
         this.getFile(path)
     },
-    showContextMenu(e){
-        console.log('e.clientX', e.clientX)
-        console.log('e.clientY', e.clientY)
-
-        console.log('e.pageX', e.pageX)
-        console.log('e.pageY', e.pageY)
-
-        console.log('e.offsetX', e.offsetX)
-        console.log('e.offsetY', e.offsetY)
-
-        this.setState({
-            contextMenuProps: {
-                display: true,
-                x: e.clientX,
-                y: e.clientY
-            }
-        })
-    },
-    hideContextMenu(){
-        console.log("hiding context menu...")
-        this.setState({
-            contextMenuProps: {
-                display: false,
-            }
-        })
-    },
     pickItem(itemName){
         this.setState({
             selectedItem: itemName,
@@ -468,15 +469,7 @@ var Cloud = React.createClass({
             selectedItem: ''
         })
     },
-    mouseDown(e){
-        if (e.button === 2) {
-            this.showContextMenu(e)
-        } else {
-            console.log('桌面点击')
-            this.hideContextMenu()
-            this.unPickItem()
-        }
-    }
+
 })
 
 export default Cloud

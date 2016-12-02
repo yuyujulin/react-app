@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom'
 
 import {Router, Route, IndexRoute, Link, hashHistory} from 'react-router'
 
-import {Menu, Switch, Row, Col} from 'antd'
+import {Menu, Switch} from 'antd'
 
 import Cloud from './pjl-cloud'
 import TodoMvc from './todomvc'
@@ -55,19 +55,14 @@ const App = React.createClass({
     render(){
         return (
             <div className="app">
-                <Row>
-                    <Col span={4}>
-                        <div className="side-menu">
-                            <SideMenu/>
-                        </div>
-                    </Col>
-                    <Col span={20}>
-                        <div className="container">
-                            {this.props.children}
-                        </div>
-                    </Col>
-                </Row>
 
+                <div className="side-menu">
+                    <SideMenu/>
+                </div>
+
+                <div className="container">
+                    {this.props.children}
+                </div>
 
             </div>
         )
@@ -81,8 +76,7 @@ const AppRouter = React.createClass({
                 <Route path='/' component={App}>
                     <IndexRoute component={Student}/>
                     <Route path='/cloud/*' component={Cloud}/>
-                    <Route path='/cloud' component={Cloud}>
-                    </Route>
+                    <Route path='/cloud' component={Cloud}/>
                     <Route path='todomvc' component={TodoMvc}/>
                     <Route path='student' component={Student}/>
                 </Route>

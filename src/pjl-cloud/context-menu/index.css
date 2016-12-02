@@ -1,7 +1,5 @@
 .context-menu {
-    position: relative;
-    left: 200px;
-    top: 200px;
+    position: fixed;
     z-index: 100;
 }
 .context-menu li {
