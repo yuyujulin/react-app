@@ -5,6 +5,8 @@ node_modules
 
 npm-debug.log
 
+debug.log
+
 # 以'#'开始的行，被视为注释.
 # 忽略掉所有文件名是 foo.txt的文件.
 # foo.txt
