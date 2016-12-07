@@ -4,7 +4,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import {Router, Route, IndexRoute, Link, hashHistory} from 'react-router'
+import {Router, Route, IndexRedirect, Link, hashHistory} from 'react-router'
 
 import {Menu, Switch} from 'antd'
 
@@ -75,7 +75,7 @@ const AppRouter = React.createClass({
         return (
             <Router history={hashHistory}>
                 <Route path='/' component={App}>
-                    <IndexRoute component={Student}/>
+                    <IndexRedirect to="/cloud"/>
                     <Route path='/cloud/*' component={Cloud}/>
                     <Route path='/cloud' component={Cloud}/>
                     <Route path='student' component={Student}/>
